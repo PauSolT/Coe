@@ -21,10 +21,21 @@ public class HealthComponent : MonoBehaviour
     }
 
     /// <summary>
+    /// User takes damage.
+    /// </summary>
+    /// <param name="damage">Amount of damage the user takes.</param>
+    /// <returns>Returns the damage dealt to health.</returns>
+    public void TakeDamage(float damage)
+    {
+        Log.Info($"{gameObject.name} Taking {damage} damage", this);
+        DecreaseHealth(damage);
+    }
+
+    /// <summary>
     /// Decreases the health of the user.
     /// </summary>
-    /// <param name="damage">Damage to subtract to health. It's in negative.</param>
-    /// <returns>Returns the damage dealt to health.</returns>
+    /// <param name="damage">Damage to subtract to health.</param>
+    /// <returns>Returns the effective damage dealt to health.</returns>
     public float DecreaseHealth(float damage)
     {
         CurrentHealth -= damage;
@@ -39,6 +50,26 @@ public class HealthComponent : MonoBehaviour
         return CurrentHealth - damage;
     }
 
+    /// <summary>
+    /// Incerases the health of the user.
+    /// </summary>
+    /// <param name="healing">Heal to add to health.</param>
+    /// <returns>Returns the effective healing done.</returns>
+    public float Heal(float healing)
+    {
+        Log.Info($"Healing {healing}", this);
+        float previousHealth = CurrentHealth;
+
+        CurrentHealth += healing;
+        if (CurrentHealth > MaxHealth)
+        {
+            CurrentHealth = MaxHealth;
+        }
+
+        return CurrentHealth - previousHealth;
+
+    }
+
 
     /// <summary>
     /// When the user reaches 0 hp.
@@ -47,5 +78,7 @@ public class HealthComponent : MonoBehaviour
     {
         OnDeath?.Invoke();
     }
+
+
 
 }
