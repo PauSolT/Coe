@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     BoxCollider2D capsuleCollider;
     RaycastOrigins raycastOrigins;
 
+    public CollisionInfo collisions;
+
     void Start()
     {
         capsuleCollider = GetComponent<BoxCollider2D>();
@@ -28,6 +30,8 @@ public class PlayerController : MonoBehaviour
     public void Move(Vector3 velocity)
     {
         UpdateRaycastOrigins();
+
+        collisions.Reset();
 
         if(velocity.x != 0)
         {
@@ -65,6 +69,10 @@ public class PlayerController : MonoBehaviour
                 //Make the raylenght the same as hit distance to avoid collision problems
                 //When multiple rays hit collisions with different distances
                 rayLength = hit.distance;
+
+                //Check if the collision is hitting something left or right
+                collisions.left = directionX == -1;
+                collisions.right = directionX == 1;
             }
         }
     }
@@ -95,6 +103,10 @@ public class PlayerController : MonoBehaviour
                 //Make the raylenght the same as hit distance to avoid collision problems
                 //When multiple rays hit collisions with different distances
                 rayLength = hit.distance;
+
+                //Check if the collision is hitting something above or below
+                collisions.below = directionY == -1;
+                collisions.above = directionY == 1;
             }
         }
     }
@@ -135,6 +147,19 @@ public class PlayerController : MonoBehaviour
     struct RaycastOrigins
     {
         public Vector2 topLeft, topRight, bottomLeft, bottomRight;
+    }
+
+    public struct CollisionInfo
+    {
+        public bool above, below, left, right;
+
+        /// <summary>
+        /// Reset collisions info
+        /// </summary>
+        public void Reset()
+        {
+            above = below = left = right = false;
+        }
     }
 
 }
