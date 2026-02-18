@@ -11,6 +11,7 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
     //Create an event for every input
     public event Action<Vector2> MoveEvent;
     public event Action JumpEvent;
+    public event Action CancelJumpEvent;
 
     private void OnEnable()
     {
@@ -49,6 +50,11 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
         if (context.phase == InputActionPhase.Performed)
         {
             JumpEvent?.Invoke();
+        }
+
+        if (context.phase == InputActionPhase.Canceled)
+        {
+            CancelJumpEvent?.Invoke();
         }
     }
 
