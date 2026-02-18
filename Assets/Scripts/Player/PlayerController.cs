@@ -3,7 +3,8 @@ using UnityEngine;
 [RequireComponent (typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour
 {
-    [field: SerializeField] InputReader inputReader;
+    public LayerMask collisionMask;
+
     [field: SerializeField] int verticalRaycount = 4;
     [field: SerializeField] int horizontalRaycount = 4;
 
@@ -13,40 +14,89 @@ public class PlayerController : MonoBehaviour
 
     BoxCollider2D capsuleCollider;
     RaycastOrigins raycastOrigins;
+
     void Start()
     {
         capsuleCollider = GetComponent<BoxCollider2D>();
-
-        inputReader.MoveEvent += Move;
-        inputReader.JumpEvent += Jump;
-        inputReader.CancelJumpEvent += CancelJump;
-
+        CalculateRaySpacing();
     }
 
-    void FixedUpdate()
+    /// <summary>
+    /// Move the player and checking collisions
+    /// </summary>
+    /// <param name="velocity">Current velocity of the player</param>
+    public void Move(Vector3 velocity)
     {
         UpdateRaycastOrigins();
-        CalculateRaySpacing();
+
+        if(velocity.x != 0)
+        {
+            HorizontalCollisions(ref velocity);
+        }
+        if (velocity.y != 0)
+        {
+            VerticalCollisions(ref velocity);
+        }
+        transform.Translate(velocity);
+    }
+
+    /// <summary>
+    /// Checks for horizontal collisions
+    /// </summary>
+    /// <param name="velocity">Current velocity of the player</param>
+    void HorizontalCollisions(ref Vector3 velocity)
+    {
+        float directionX = Mathf.Sign(velocity.x);
+        float rayLength = Mathf.Abs(velocity.x) + skinWidth;
 
         for (int i = 0; i < verticalRaycount; i++)
         {
-            Debug.DrawRay(raycastOrigins.bottomLeft + i * verticalRaySpacing * Vector2.right, Vector2.up * -2f, Color.red);
+            //Depending of the direction of X, where the origin of rays should start
+            Vector2 rayOrigin = directionX == -1 ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
+            rayOrigin += Vector2.up * (horizontalRaySpacing * i);
+
+            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
+            Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.red);
+
+            if (hit)
+            {
+                //If hit, make the velocity the remaining distance to collide
+                velocity.x = (hit.distance - skinWidth) * directionX;
+                //Make the raylenght the same as hit distance to avoid collision problems
+                //When multiple rays hit collisions with different distances
+                rayLength = hit.distance;
+            }
         }
     }
 
-    void Move(Vector2 input)
+    /// <summary>
+    /// Checks for vertical collisions
+    /// </summary>
+    /// <param name="velocity">Current velocity of the player</param>
+    void VerticalCollisions(ref Vector3 velocity)
     {
-        Log.Info($"Player moving: {input}", this);
-    }
+        float directionY = Mathf.Sign(velocity.y);
+        float rayLength = Mathf.Abs(velocity.y) + skinWidth;
 
-    void Jump()
-    {
-        Log.Info($"Player jumped", this);
-    }
+        for (int i = 0; i < verticalRaycount; i++)
+        {
+            //Depending of the direction of X, where the origin of rays should start
+            Vector2 rayOrigin = directionY == -1 ? raycastOrigins.bottomLeft : raycastOrigins.topLeft;
+            //Adding velocity X because casts will be when player has moved on the X axis
+            rayOrigin += Vector2.right * (verticalRaySpacing * i + velocity.x);
 
-    void CancelJump()
-    {
-        Log.Info($"Player canceled jumped", this);
+            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
+            Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
+
+            if (hit)
+            {
+                //If hit, make the velocity the remaining distance to collide
+                velocity.y = (hit.distance - skinWidth) * directionY;
+                //Make the raylenght the same as hit distance to avoid collision problems
+                //When multiple rays hit collisions with different distances
+                rayLength = hit.distance;
+            }
+        }
     }
 
 
