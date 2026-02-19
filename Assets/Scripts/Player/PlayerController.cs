@@ -1,3 +1,4 @@
+using Unity.Mathematics.Geometry;
 using UnityEngine;
 
 [RequireComponent (typeof(BoxCollider2D))]
@@ -11,6 +12,7 @@ public class PlayerController : MonoBehaviour
     const float skinWidth = 0.015f;
     float horizontalRaySpacing;
     float verticalRaySpacing;
+    float maxClimbAngle = 75;
 
     BoxCollider2D capsuleCollider;
     RaycastOrigins raycastOrigins;
@@ -64,15 +66,43 @@ public class PlayerController : MonoBehaviour
 
             if (hit)
             {
-                //If hit, make the velocity the remaining distance to collide
-                velocity.x = (hit.distance - skinWidth) * directionX;
-                //Make the raylenght the same as hit distance to avoid collision problems
-                //When multiple rays hit collisions with different distances
-                rayLength = hit.distance;
+                //Get angle of the slope
+                float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 
-                //Check if the collision is hitting something left or right
-                collisions.left = directionX == -1;
-                collisions.right = directionX == 1;
+                //If user is climbing a slope
+                if ( i== 0 && slopeAngle <= maxClimbAngle)
+                {
+                    float distanceToSlopeStart = 0;
+                    //If user starts to climb new slope
+                    //Clamp the user to actually touch the slope    
+                    if (slopeAngle != collisions.slopeAngleOld)
+                    {
+                        distanceToSlopeStart = hit.distance - skinWidth;
+                        velocity.x -= distanceToSlopeStart * directionX;
+                    }
+                    ClimbSlope(ref velocity, slopeAngle);
+                    velocity.x += distanceToSlopeStart * directionX;
+                }
+
+                //If user is not climbing a slope
+                if (!collisions.climbingSlope || slopeAngle > maxClimbAngle)
+                {
+                    //If hit, make the velocity the remaining distance to collide
+                    velocity.x = Mathf.Min(Mathf.Abs(velocity.x), (hit.distance - skinWidth)) * directionX;
+                    //Make the raylenght the same as hit distance to avoid collision problems
+                    //When multiple rays hit collisions with different distances
+                    rayLength = Mathf.Min(Mathf.Abs(velocity.x) + skinWidth, hit.distance);
+
+                    if (collisions.climbingSlope)
+                    {
+                        //Update the Y velocity when climbing slopes and encountering an obstacle on the slope
+                        velocity.y = Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x);
+                    }
+
+                    //Check if the collision is hitting something left or right
+                    collisions.left = directionX == -1;
+                    collisions.right = directionX == 1;
+                }
             }
         }
     }
@@ -103,6 +133,13 @@ public class PlayerController : MonoBehaviour
                 //Make the raylenght the same as hit distance to avoid collision problems
                 //When multiple rays hit collisions with different distances
                 rayLength = hit.distance;
+
+                if (collisions.climbingSlope)
+                {
+                    //Update the X velocity when climbing slopes and encountering a ceiling on the slope
+                    velocity.x = velocity.y / Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
+                }
+
 
                 //Check if the collision is hitting something above or below
                 collisions.below = directionY == -1;
@@ -143,6 +180,27 @@ public class PlayerController : MonoBehaviour
         verticalRaySpacing = bounds.size.x / (verticalRaycount - 1);
     }
 
+    /// <summary>
+    /// Allows the user to climb slopes
+    /// </summary>
+    /// <param name="velocity">Velocity of the user</param>
+    /// <param name="slopeAngle">Angle of the slope tha is being climbed currently</param>
+    void ClimbSlope(ref Vector3 velocity, float slopeAngle)
+    {
+        float moveDistance = Mathf.Abs(velocity.x);
+        float climbVelocityY = Mathf.Sin(slopeAngle * Mathf.Deg2Rad) * moveDistance;
+
+
+        if(velocity.y <= climbVelocityY)
+        {
+            //Assume that the user is not jumping
+            velocity.y = Mathf.Sin(slopeAngle * Mathf.Deg2Rad) * moveDistance;
+            velocity.x = Mathf.Cos(slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign(velocity.x);
+            collisions.below = true;
+            collisions.climbingSlope = true;
+            collisions.slopeAngle = slopeAngle;
+        }
+    }
 
     struct RaycastOrigins
     {
@@ -152,13 +210,18 @@ public class PlayerController : MonoBehaviour
     public struct CollisionInfo
     {
         public bool above, below, left, right;
+        public bool climbingSlope;
+        public float slopeAngle, slopeAngleOld;
 
         /// <summary>
         /// Reset collisions info
         /// </summary>
         public void Reset()
         {
-            above = below = left = right = false;
+            above = below = left = right = climbingSlope = false;
+            slopeAngleOld = slopeAngle;
+            slopeAngle = 0f;
+
         }
     }
 
