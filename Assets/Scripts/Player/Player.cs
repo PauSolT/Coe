@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [field: SerializeField] InputReader inputReader;
-    PlayerController controller;
+    Controller2D controller;
 
     [field: SerializeField] float jumpHeight = 4;
     [field: SerializeField] float timeToJumpApex = 0.4f;
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
         inputReader.JumpEvent += Jump;
         inputReader.CancelJumpEvent += CancelJump;
 
-        controller = GetComponent<PlayerController>();
+        controller = GetComponent<Controller2D>();
 
         //Formula to get gravity, knowing jump height and time to jump to apex point
         //Negative is to make gravity negative

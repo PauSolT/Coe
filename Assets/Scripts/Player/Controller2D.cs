@@ -2,7 +2,7 @@ using Unity.Mathematics.Geometry;
 using UnityEngine;
 
 
-public class PlayerController : RaycastController
+public class Controller2D : RaycastController
 {
     float maxClimbAngle = 75;
     float maxDescendAngle = 75;
@@ -18,7 +18,7 @@ public class PlayerController : RaycastController
     /// Move the player and checking collisions
     /// </summary>
     /// <param name="velocity">Current velocity of the player</param>
-    public void Move(Vector3 velocity)
+    public void Move(Vector3 velocity, bool standingOnPlatform = false)
     {
         UpdateRaycastOrigins();
         collisions.Reset();
@@ -40,6 +40,12 @@ public class PlayerController : RaycastController
             VerticalCollisions(ref velocity);
         }
         transform.Translate(velocity);
+
+        //If standing on platform, assume user is grounded and can jump
+        if (standingOnPlatform)
+        {
+            collisions.below = true;
+        }
     }
 
     /// <summary>
@@ -62,6 +68,12 @@ public class PlayerController : RaycastController
 
             if (hit)
             {
+                //If raycast hit ditance is 0, skip this ray
+                if (hit.distance == 0)
+                {
+                    continue;
+                }
+
                 //Get angle of the slope
                 float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 

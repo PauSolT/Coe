@@ -4,8 +4,11 @@ using UnityEngine;
 public class PlatformController : RaycastController
 {
     public LayerMask passengerMask;
-
     public Vector3 move;
+
+    List<PassengerMovement> passengerMovement;
+    Dictionary<Transform, Controller2D> passengersDictionary = new Dictionary<Transform, Controller2D>();
+
     protected override void Start()
     {
         base.Start();
@@ -17,17 +20,41 @@ public class PlatformController : RaycastController
 
         Vector3 velocity = move * Time.deltaTime;
         
-        MovePassangers(velocity);
+        CalculatePassangerMovement(velocity);
+        MovePassangers(true);
         transform.Translate(velocity);
+        MovePassangers(false);
+
     }
 
     /// <summary>
-    /// Move objects that are above the platform
+    /// Move the passengers
+    /// </summary>
+    /// <param name="beforeMovePlatform">If the passanger moves before the platform moves</param>
+    void MovePassangers(bool beforeMovePlatform)
+    {
+        foreach (PassengerMovement passenger in passengerMovement)
+        {
+            if (passengersDictionary.ContainsKey(passenger.transform))
+            {
+                passengersDictionary.Add(passenger.transform, passenger.transform.GetComponent<Controller2D>());
+            }
+
+            if (passenger.moveBeforePlatform == beforeMovePlatform)
+            {
+                passengersDictionary[passenger.transform].Move(passenger.velocity, passenger.standingOnPlatform);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Calculate the movement of the passengers
     /// </summary>
     /// <param name="velocity">Velocity of the platform</param>
-    void MovePassangers(Vector3 velocity)
+    void CalculatePassangerMovement(Vector3 velocity)
     {
         HashSet<Transform> passangers = new HashSet<Transform>();
+        passengerMovement = new List<PassengerMovement>();
 
         float directionX = Mathf.Sign(velocity.x);
         float directionY = Mathf.Sign(velocity.y);
@@ -55,7 +82,7 @@ public class PlatformController : RaycastController
                         float pushX = directionY == 1 ? velocity.x : 0;
                         float pushY = velocity.y - (hit.distance - skinWidth) * directionY;
 
-                        hit.transform.Translate(new Vector3(pushX, pushY));
+                        passengerMovement.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), directionY == 1, true));
                     }
                 }
             }
@@ -82,9 +109,9 @@ public class PlatformController : RaycastController
                         //Move the passanger with the platform
                         passangers.Add(hit.transform);
                         float pushX = velocity.x - (hit.distance - skinWidth) * directionX;
-                        float pushY = 0;
+                        float pushY = -skinWidth;
 
-                        hit.transform.Translate(new Vector3(pushX, pushY));
+                        passengerMovement.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), false, true));
                     }
                 }
             }
@@ -110,10 +137,26 @@ public class PlatformController : RaycastController
                         float pushX = velocity.x;
                         float pushY = velocity.y;
 
-                        hit.transform.Translate(new Vector3(pushX, pushY));
+                        passengerMovement.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), directionY == 1, false));
                     }
                 }
             }
+        }
+    }
+
+    struct PassengerMovement
+    {
+        public Transform transform;
+        public Vector3 velocity;
+        public bool standingOnPlatform;
+        public bool moveBeforePlatform;
+
+        public PassengerMovement(Transform _transform, Vector3 _velocity, bool _standingOnPlatform, bool _moveBeforePlatform)
+        {
+            transform = _transform;
+            velocity = _velocity;
+            standingOnPlatform = _standingOnPlatform;
+            moveBeforePlatform = _moveBeforePlatform;
         }
     }
 }
