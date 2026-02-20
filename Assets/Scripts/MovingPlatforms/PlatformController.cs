@@ -14,7 +14,7 @@ public class PlatformController : RaycastController
         base.Start();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         UpdateRaycastOrigins();
 
@@ -35,7 +35,7 @@ public class PlatformController : RaycastController
     {
         foreach (PassengerMovement passenger in passengerMovement)
         {
-            if (passengersDictionary.ContainsKey(passenger.transform))
+            if (!passengersDictionary.ContainsKey(passenger.transform))
             {
                 passengersDictionary.Add(passenger.transform, passenger.transform.GetComponent<Controller2D>());
             }
@@ -117,7 +117,7 @@ public class PlatformController : RaycastController
             }
         }
 
-        //If passanger is oin top of a horizontal or downward moving platform
+        //If passanger is on top of a horizontal or downward moving platform
         if (directionY == -1 || velocity.y == 0 && velocity.x != 0)
         {
             float rayLength = skinWidth * 2;
@@ -137,7 +137,7 @@ public class PlatformController : RaycastController
                         float pushX = velocity.x;
                         float pushY = velocity.y;
 
-                        passengerMovement.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), directionY == 1, false));
+                        passengerMovement.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), true, false));
                     }
                 }
             }

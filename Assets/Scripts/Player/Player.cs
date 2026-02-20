@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
         jumpVelocity = Mathf.Abs(gravity * timeToJumpApex);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (controller.collisions.above || controller.collisions.below)
         {

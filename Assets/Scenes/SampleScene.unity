@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 182033051}
   - component: {fileID: 182033056}
   - component: {fileID: 182033057}
-  - component: {fileID: 182033055}
+  - component: {fileID: 182033058}
   m_Layer: 7
   m_Name: Player (Movement)
   m_TagString: Player
@@ -156,23 +156,6 @@ Transform:
   - {fileID: 634984688}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &182033055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 182033048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c3f3b35cfe2f0b48b9dd5dc8511e7bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 64
-  verticalRaycount: 4
-  horizontalRaycount: 4
 --- !u!61 &182033056
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -237,6 +220,23 @@ MonoBehaviour:
   moveSpeed: 6
   elements:
   - {fileID: 557107680}
+--- !u!114 &182033058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182033048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 163a863d1f643fe40b35656a773b16cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Controller2D
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 64
+  verticalRaycount: 4
+  horizontalRaycount: 4
 --- !u!1 &451205128
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,7 +370,7 @@ Transform:
   m_GameObject: {fileID: 451205128}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.37, y: -2.34, z: 0}
+  m_LocalPosition: {x: -7.804, y: -2.34, z: 0}
   m_LocalScale: {x: 2.7887495, y: 0.80617636, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -544,7 +544,7 @@ GameObject:
   m_Component:
   - component: {fileID: 557107681}
   - component: {fileID: 557107680}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: FE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -673,7 +673,7 @@ GameObject:
   m_Component:
   - component: {fileID: 634984688}
   - component: {fileID: 634984689}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -905,7 +905,7 @@ GameObject:
   - component: {fileID: 1539378754}
   - component: {fileID: 1539378753}
   - component: {fileID: 1539378752}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Player (Hitbox)
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -957,7 +957,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
