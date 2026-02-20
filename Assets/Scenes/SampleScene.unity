@@ -396,7 +396,14 @@ MonoBehaviour:
   passengerMask:
     serializedVersion: 2
     m_Bits: 128
-  move: {x: 1, y: 0, z: 0}
+  localWaypoints:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 3.68, z: 0}
+  - {x: -4.83, y: 3.68, z: 0}
+  speed: 3
+  cyclic: 1
+  waitTime: 0
+  easeAmount: 1.05
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

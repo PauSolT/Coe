@@ -4,7 +4,19 @@ using UnityEngine;
 public class PlatformController : RaycastController
 {
     public LayerMask passengerMask;
-    public Vector3 move;
+
+    public Vector3[] localWaypoints;
+    Vector3[] globalWaypoints;
+
+    public float speed;
+    public bool cyclic;
+    public float waitTime;
+    [Range(0,2)]
+    public float easeAmount;
+
+    int waypointIndex;
+    float percentBetweenWaypoints;
+    float nextMoveTime;
 
     List<PassengerMovement> passengerMovement;
     Dictionary<Transform, Controller2D> passengersDictionary = new Dictionary<Transform, Controller2D>();
@@ -12,19 +24,78 @@ public class PlatformController : RaycastController
     protected override void Start()
     {
         base.Start();
+        globalWaypoints = new Vector3[localWaypoints.Length];
+        for (int i = 0; i < localWaypoints.Length; i++)
+        {
+            globalWaypoints[i] = localWaypoints[i] + transform.position;
+        }
     }
 
-    void FixedUpdate()
+    void Update()
     {
         UpdateRaycastOrigins();
 
-        Vector3 velocity = move * Time.deltaTime;
+        Vector3 velocity = CalculatePlatformMovement();
         
         CalculatePassangerMovement(velocity);
         MovePassangers(true);
         transform.Translate(velocity);
         MovePassangers(false);
 
+    }
+
+    /// <summary>
+    /// Calculate the ease of movement when arriving/exiting from waypoints
+    /// </summary>
+    /// <param name="x">The percent distance between waypoints</param>
+    /// <returns>Returns the current easing</returns>
+    float Ease(float x)
+    {
+        float a = easeAmount + 1;
+        return Mathf.Pow(x, a) / (Mathf.Pow(x, a) + Mathf.Pow(1 - x, a));
+    }
+
+    /// <summary>
+    /// Calculate the the movement of the platform
+    /// </summary>
+    /// <returns>Returns the position of the next frame</returns>
+    Vector3 CalculatePlatformMovement()
+    {
+        //If there is wait time, don't move while waiting
+        if (Time.time < nextMoveTime)
+        {
+            return Vector3.zero;
+        }
+
+        //Cycle waypoints
+        waypointIndex %= globalWaypoints.Length;
+        int toWayPointIndex = (waypointIndex + 1) % globalWaypoints.Length;
+
+        float distanceBetweenWaypoints = Vector3.Distance(globalWaypoints[waypointIndex], globalWaypoints[toWayPointIndex]);
+        percentBetweenWaypoints += Time.deltaTime * speed / distanceBetweenWaypoints;
+        percentBetweenWaypoints = Mathf.Clamp01(percentBetweenWaypoints);
+        float easedPercentBetweenWaypoints = Ease(percentBetweenWaypoints);
+
+        Vector3 newPos = Vector3.Lerp(globalWaypoints[waypointIndex], globalWaypoints[toWayPointIndex], easedPercentBetweenWaypoints);
+
+        //If reached next waypoint
+        if (percentBetweenWaypoints >= 1)
+        {
+            percentBetweenWaypoints = 0;
+            waypointIndex++;
+
+            if (!cyclic)
+            {
+                if (waypointIndex >= globalWaypoints.Length - 1)
+                {
+                    waypointIndex = 0;
+                    System.Array.Reverse(globalWaypoints);
+                }
+            }
+            nextMoveTime = Time.time + waitTime;
+        }
+
+        return newPos - transform.position;
     }
 
     /// <summary>
@@ -157,6 +228,22 @@ public class PlatformController : RaycastController
             velocity = _velocity;
             standingOnPlatform = _standingOnPlatform;
             moveBeforePlatform = _moveBeforePlatform;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (localWaypoints != null)
+        {
+            Gizmos.color = Color.red;
+            float size = 0.3f;
+
+            for (int i = 0; i < localWaypoints.Length; i++)
+            {
+                Vector3 globalWaypointPosition = Application.isPlaying ? globalWaypoints[i] : localWaypoints[i]  + transform.position;
+                Gizmos.DrawLine(globalWaypointPosition - Vector3.up * size, globalWaypointPosition + Vector3.up * size);
+                Gizmos.DrawLine(globalWaypointPosition - Vector3.left * size, globalWaypointPosition + Vector3.left * size);
+            }
         }
     }
 }
