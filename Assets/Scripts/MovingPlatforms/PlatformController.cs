@@ -144,7 +144,7 @@ public class PlatformController : RaycastController
                 RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, passengerMask);
 
                 //If something is above or below
-                if (hit)
+                if (hit && hit.distance != 0)
                 {
                     if(!passangers.Contains(hit.transform))
                     {
@@ -173,7 +173,7 @@ public class PlatformController : RaycastController
                 RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, passengerMask);
 
                 //If something is left or right
-                if (hit)
+                if (hit && hit.distance != 0)
                 {
                     if (!passangers.Contains(hit.transform))
                     {
@@ -199,7 +199,7 @@ public class PlatformController : RaycastController
                 RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up, rayLength, passengerMask);
 
                 //If there is a passanger on the platform
-                if (hit)
+                if (hit && hit.distance != 0)
                 {
                     if (!passangers.Contains(hit.transform))
                     {

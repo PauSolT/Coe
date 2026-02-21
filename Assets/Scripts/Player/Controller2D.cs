@@ -8,6 +8,7 @@ public class Controller2D : RaycastController
     float maxDescendAngle = 75;
 
     public CollisionInfo collisions;
+    Vector2 playerInput;
 
     protected override void Start()
     {
@@ -15,15 +16,21 @@ public class Controller2D : RaycastController
         collisions.faceDir = 1;
     }
 
+    public void Move (Vector3 velocity, bool standingOnPlatform = false)
+    {
+        Move(velocity, Vector2.zero, standingOnPlatform);
+    }
+
     /// <summary>
     /// Move the player and checking collisions
     /// </summary>
     /// <param name="velocity">Current velocity of the player</param>
-    public void Move(Vector3 velocity, bool standingOnPlatform = false)
+    public void Move(Vector3 velocity, Vector2 input,bool standingOnPlatform = false)
     {
         UpdateRaycastOrigins();
         collisions.Reset();
         collisions.velocityOld = velocity;
+        playerInput = input;
 
         //User is descending slope or falling
         if (velocity.y < 0)
@@ -83,6 +90,7 @@ public class Controller2D : RaycastController
                 {
                     continue;
                 }
+               
 
                 //Get angle of the slope
                 float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
@@ -151,6 +159,29 @@ public class Controller2D : RaycastController
 
             if (hit)
             {
+                //If a platform has tag "Through"
+                if (hit.collider.tag == "Through")
+                {
+                    //Pass through above it
+                    if (directionY == 1 || hit.distance == 0)
+                    {
+                        continue;
+                    }
+
+                    //Pass through below it
+                    if (collisions.fallingThroughPlatform)
+                    {
+                        continue;
+                    }
+
+                    if (playerInput.y == -1)
+                    {
+                        collisions.fallingThroughPlatform = true;
+                        Invoke(nameof(ResetFallingThroughPlatform), 0.5f);
+                        continue;
+                    }
+                }
+
                 //If hit, make the velocity the remaining distance to collide
                 velocity.y = (hit.distance - skinWidth) * directionY;
                 //Make the raylenght the same as hit distance to avoid collision problems
@@ -256,6 +287,14 @@ public class Controller2D : RaycastController
         }
     }
 
+    /// <summary>
+    /// Resets fallingThroughPlatform to false
+    /// </summary>
+    void ResetFallingThroughPlatform()
+    {
+        collisions.fallingThroughPlatform = false;
+    }
+
     public struct CollisionInfo
     {
         public bool above, below, left, right;
@@ -263,6 +302,7 @@ public class Controller2D : RaycastController
         public float slopeAngle, slopeAngleOld;
         public Vector3 velocityOld;
         public int faceDir;
+        public bool fallingThroughPlatform;
 
         /// <summary>
         /// Reset collisions info

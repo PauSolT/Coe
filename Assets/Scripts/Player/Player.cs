@@ -7,7 +7,8 @@ public class Player : MonoBehaviour
     [field: SerializeField] InputReader inputReader;
     Controller2D controller;
 
-    [field: SerializeField] float jumpHeight = 4;
+    [field: SerializeField] float maxJumpHeight = 4;
+    [field: SerializeField] float minJumpHeight = 1;
     [field: SerializeField] float timeToJumpApex = 0.4f;
     [field: SerializeField] float moveSpeed = 6;
     [field: SerializeField] float wallSlideSpeedMax = 3;
@@ -18,7 +19,8 @@ public class Player : MonoBehaviour
     float accelerationTimeGrounded = 0.1f;
 
     float gravity;
-    float jumpVelocity;
+    float maxJumpVelocity;
+    float minJumpVelocity;
     float velocityXSmoothing;
     Vector3 velocity;
     Vector2 input;
@@ -48,9 +50,10 @@ public class Player : MonoBehaviour
 
         //Formula to get gravity, knowing jump height and time to jump to apex point
         //Negative is to make gravity negative
-        gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
+        gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         //Formula to get jump velocity, with already calculated gravity
-        jumpVelocity = Mathf.Abs(gravity * timeToJumpApex);
+        maxJumpVelocity = Mathf.Abs(gravity * timeToJumpApex);
+        minJumpVelocity = Mathf.Sqrt(2* Mathf.Abs(gravity) * minJumpHeight);
     }
 
     void Update()
@@ -61,7 +64,7 @@ public class Player : MonoBehaviour
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below ? accelerationTimeGrounded : accelerationTimeAirbone));
 
         bool wallSliding = false;
-
+        //Wall sticking timers
         if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0)
         {
             wallSliding = true;
@@ -89,12 +92,10 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (controller.collisions.above || controller.collisions.below)
-        {
-            velocity.y = 0;
-        }
+        //IF jump is pressed
         if (pressedJump)
         {
+            //Wall sliding physics
             if (wallSliding)
             {
                 if (wallDirX == input.x)
@@ -115,14 +116,26 @@ public class Player : MonoBehaviour
 
             if (controller.collisions.below)
             {
-                velocity.y = jumpVelocity;
+                velocity.y = maxJumpVelocity;
+            }
+        }
+        else
+        {
+            //IF jump is released
+            if (velocity.y > minJumpVelocity)
+            {
+                velocity.y = minJumpVelocity;
             }
         }
 
-
         velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        controller.Move(velocity * Time.deltaTime, input);
 
+
+        if (controller.collisions.above || controller.collisions.below)
+        {
+            velocity.y = 0;
+        }
     }
 
     void PreviousElement()
