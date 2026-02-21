@@ -5,12 +5,13 @@ public class RaycastController : MonoBehaviour
 {
     public LayerMask collisionMask;
 
-    [field: SerializeField] protected int verticalRaycount = 4;
-    [field: SerializeField] protected int horizontalRaycount = 4;
+    protected int verticalRaycount;
+    protected int horizontalRaycount;
 
     protected const float skinWidth = 0.015f;
     protected float horizontalRaySpacing;
     protected float verticalRaySpacing;
+    protected const float distanceBetweenRays = 0.25f;
 
     protected BoxCollider2D capsuleCollider;
     protected RaycastOrigins raycastOrigins;
@@ -43,6 +44,13 @@ public class RaycastController : MonoBehaviour
     {
         Bounds bounds = capsuleCollider.bounds;
         bounds.Expand(skinWidth * -2f);
+
+        //Automatically calculate raycount via distanceBetweenRays
+        float boundsWidth = bounds.size.x;
+        float boundsHeight = bounds.size.y;
+
+        horizontalRaycount = Mathf.RoundToInt(boundsHeight / distanceBetweenRays);
+        verticalRaycount = Mathf.RoundToInt(boundsWidth / distanceBetweenRays);
 
         //Minimum of 2 raycasts, one at the start, one at the end
         horizontalRaycount = Mathf.Clamp(horizontalRaycount, 2, int.MaxValue);
