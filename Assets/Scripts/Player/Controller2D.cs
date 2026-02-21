@@ -12,6 +12,7 @@ public class Controller2D : RaycastController
     protected override void Start()
     {
         base.Start();
+        collisions.faceDir = 1;
     }
 
     /// <summary>
@@ -30,11 +31,14 @@ public class Controller2D : RaycastController
             DescendSlope(ref velocity);
         }
 
-        //If user is moving
-        if(velocity.x != 0)
+        if (velocity.x != 0)
         {
-            HorizontalCollisions(ref velocity);
+            collisions.faceDir = (int)Mathf.Sign(velocity.x);
         }
+
+
+        HorizontalCollisions(ref velocity);
+        //If user is moving
         if (velocity.y != 0)
         {
             VerticalCollisions(ref velocity);
@@ -54,8 +58,14 @@ public class Controller2D : RaycastController
     /// <param name="velocity">Current velocity of the player</param>
     void HorizontalCollisions(ref Vector3 velocity)
     {
-        float directionX = Mathf.Sign(velocity.x);
+        float directionX = collisions.faceDir;
         float rayLength = Mathf.Abs(velocity.x) + skinWidth;
+
+        //If player is not moving, shorten the ray length
+        if (Mathf.Abs(velocity.x) < skinWidth)
+        {
+            rayLength = skinWidth * 2;
+        }
 
         for (int i = 0; i < verticalRaycount; i++)
         {
@@ -252,6 +262,7 @@ public class Controller2D : RaycastController
         public bool climbingSlope, descendingSlope;
         public float slopeAngle, slopeAngleOld;
         public Vector3 velocityOld;
+        public int faceDir;
 
         /// <summary>
         /// Reset collisions info
