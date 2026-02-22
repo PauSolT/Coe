@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Controller2D : RaycastController
 {
-    float maxClimbAngle = 75;
-    float maxDescendAngle = 75;
+    [field: SerializeField] float maxSlopeAngle = 75;
 
     public CollisionInfo collisions;
     Vector2 playerInput;
@@ -96,7 +95,7 @@ public class Controller2D : RaycastController
                 float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 
                 //If user is climbing a slope
-                if ( i== 0 && slopeAngle <= maxClimbAngle)
+                if ( i== 0 && slopeAngle <= maxSlopeAngle)
                 {
                     if (collisions.descendingSlope)
                     {
@@ -111,12 +110,12 @@ public class Controller2D : RaycastController
                         distanceToSlopeStart = hit.distance - skinWidth;
                         deltaVelocity.x -= distanceToSlopeStart * directionX;
                     }
-                    ClimbSlope(ref deltaVelocity, slopeAngle);
+                    ClimbSlope(ref deltaVelocity, slopeAngle, hit.normal);
                     deltaVelocity.x += distanceToSlopeStart * directionX;
                 }
 
                 //If user is not climbing a slope
-                if (!collisions.climbingSlope || slopeAngle > maxClimbAngle)
+                if (!collisions.climbingSlope || slopeAngle > maxSlopeAngle)
                 {
                     //If hit, make the deltaVelocity the remaining distance to collide
                     deltaVelocity.x = Mathf.Min(Mathf.Abs(deltaVelocity.x), (hit.distance - skinWidth)) * directionX;
@@ -218,6 +217,7 @@ public class Controller2D : RaycastController
                     //Make it so user snaps smoothly to next slope
                     deltaVelocity.x = (hit.distance - skinWidth) * directionX;
                     collisions.slopeAngle = slopeAngle;
+                    collisions.slopeNormal = hit.normal;
                 }
             }
         }
@@ -230,7 +230,7 @@ public class Controller2D : RaycastController
     /// </summary>
     /// <param name="deltaVelocity">deltaVelocity of the user</param>
     /// <param name="slopeAngle">Angle of the slope tha is being climbed currently</param>
-    void ClimbSlope(ref Vector2 deltaVelocity, float slopeAngle)
+    void ClimbSlope(ref Vector2 deltaVelocity, float slopeAngle, Vector2 slopeNormal)
     {
         float moveDistance = Mathf.Abs(deltaVelocity.x);
         float climbdeltaVelocityY = Mathf.Sin(slopeAngle * Mathf.Deg2Rad) * moveDistance;
@@ -244,6 +244,8 @@ public class Controller2D : RaycastController
             collisions.below = true;
             collisions.climbingSlope = true;
             collisions.slopeAngle = slopeAngle;
+            collisions.slopeNormal = slopeNormal;
+
         }
     }
 
@@ -253,36 +255,65 @@ public class Controller2D : RaycastController
     /// <param name="deltaVelocity">deltaVelocity of the usre</param>
     void DescendSlope(ref Vector2 deltaVelocity)
     {
-        //Depending of the direction of X, where the origin of rays should start
-        float directionX = Mathf.Sign(deltaVelocity.x);
-        Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomRight : raycastOrigins.bottomLeft;
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, -Vector2.up, Mathf.Infinity, collisionMask);
+        RaycastHit2D maxSlopeHitLeft = Physics2D.Raycast(raycastOrigins.bottomLeft, Vector2.down, Mathf.Abs(deltaVelocity.y) + skinWidth, collisionMask);
+        RaycastHit2D maxSlopeHitRight = Physics2D.Raycast(raycastOrigins.bottomRight, Vector2.down, Mathf.Abs(deltaVelocity.y) + skinWidth, collisionMask);
 
-        //If user hits ground
+        if (maxSlopeHitLeft ^ maxSlopeHitRight)
+        {
+            SlideDownMaxSlope(maxSlopeHitLeft, ref deltaVelocity);
+            SlideDownMaxSlope(maxSlopeHitRight, ref deltaVelocity);
+        }
+
+        if (!collisions.slidingDownMaxSlope)
+        {
+            //Depending of the direction of X, where the origin of rays should start
+            float directionX = Mathf.Sign(deltaVelocity.x);
+            Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomRight : raycastOrigins.bottomLeft;
+            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, -Vector2.up, Mathf.Infinity, collisionMask);
+
+            //If user hits ground
+            if (hit)
+            {
+                float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
+
+                //If ground is slope
+                if (slopeAngle != 0 && slopeAngle <= maxSlopeAngle)
+                {
+                    //If user is moving down the slope
+                    if (Mathf.Sign(hit.normal.x) == directionX)
+                    {
+                        //If user is close to the slope
+                        if (hit.distance - skinWidth <= Mathf.Tan(slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(deltaVelocity.x))
+                        {
+                            //Descend slope
+                            float moveDistance = Mathf.Abs(deltaVelocity.x);
+                            float descenddeltaVelocityY = Mathf.Sin(slopeAngle * Mathf.Deg2Rad) * moveDistance;
+                            deltaVelocity.x = Mathf.Cos(slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign(deltaVelocity.x);
+                            deltaVelocity.y -= descenddeltaVelocityY;
+
+                            collisions.slopeAngle = slopeAngle;
+                            collisions.descendingSlope = true;
+                            collisions.below = true;
+                            collisions.slopeNormal = hit.normal;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void SlideDownMaxSlope(RaycastHit2D hit, ref Vector2 deltaVelocity)
+    {
         if (hit)
         {
             float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
-
-             //If ground is slope
-            if(slopeAngle != 0 && slopeAngle <= maxDescendAngle)
+            if (slopeAngle > maxSlopeAngle)
             {
-                //If user is moving down the slope
-                if (Mathf.Sign(hit.normal.x) == directionX)
-                {
-                    //If user is close to the slope
-                    if (hit.distance - skinWidth <= Mathf.Tan(slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(deltaVelocity.x))
-                    {
-                        //Descend slope
-                        float moveDistance = Mathf.Abs(deltaVelocity.x);
-                        float descenddeltaVelocityY = Mathf.Sin(slopeAngle * Mathf.Deg2Rad) * moveDistance;
-                        deltaVelocity.x = Mathf.Cos(slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign(deltaVelocity.x);
-                        deltaVelocity.y -= descenddeltaVelocityY;
+                deltaVelocity.x = (Mathf.Abs(deltaVelocity.y) - hit.distance) / Mathf.Tan(slopeAngle * Mathf.Deg2Rad) * hit.normal.x;
 
-                        collisions.slopeAngle = slopeAngle;
-                        collisions.descendingSlope = true;
-                        collisions.below = true;
-                    }
-                }
+                collisions.slopeAngle = slopeAngle;
+                collisions.slidingDownMaxSlope = true;
+                collisions.slopeNormal = hit.normal;
             }
         }
     }
@@ -299,7 +330,9 @@ public class Controller2D : RaycastController
     {
         public bool above, below, left, right;
         public bool climbingSlope, descendingSlope;
+        public bool slidingDownMaxSlope;
         public float slopeAngle, slopeAngleOld;
+        public Vector2 slopeNormal;
         public Vector2 deltaVelocityOld;
         public int faceDir;
         public bool fallingThroughPlatform;
@@ -309,9 +342,10 @@ public class Controller2D : RaycastController
         /// </summary>
         public void Reset()
         {
-            above = below = left = right = climbingSlope = descendingSlope = false;
+            above = below = left = right = climbingSlope = descendingSlope = slidingDownMaxSlope = false;
             slopeAngleOld = slopeAngle;
             slopeAngle = 0f;
+            slopeNormal = Vector2.zero;
 
         }
     }
