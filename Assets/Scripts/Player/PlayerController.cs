@@ -1,4 +1,7 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour
@@ -9,12 +12,14 @@ public class PlayerController : MonoBehaviour
     float direction = 0f;
 
     const float skinWidth = 0.015f;
+    const float rayLength = 0.15f;
     float horizontalRaySpacing;
 
     BoxCollider2D capsuleCollider;
     RaycastOrigins raycastOrigins;
 
     Rigidbody2D rigidbody2d;
+    [field: SerializeField] LayerMask groundLayer;
 
     void Start()
     {
@@ -28,13 +33,16 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        UpdateRaycastOrigins();
-        CalculateRaySpacing();
+     
     }
 
     private void Update()
     {
         rigidbody2d.linearVelocityX = moveSpeed * direction;
+        for (int i = 0; i < horizontalRaycount; i++)
+        {
+            Debug.DrawRay(raycastOrigins.bottomLeft + Vector2.right * (horizontalRaySpacing * i), Vector2.down * rayLength, Color.red);
+        }
     }
 
     void Move(Vector2 input)
@@ -45,6 +53,10 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
+        if (CheckGround())
+        {
+            rigidbody2d.linearVelocityY = moveSpeed;
+        }
         Log.Info($"Player jumped", this);
     }
 
@@ -53,6 +65,25 @@ public class PlayerController : MonoBehaviour
         Log.Info($"Player canceled jumped", this);
     }
 
+    bool CheckGround()
+    {
+        UpdateRaycastOrigins();
+        CalculateRaySpacing();
+        RaycastHit2D hit;
+        for (int i = 0; i < horizontalRaycount; i++)
+        {
+            Log.Info("HOOOLLAAAAAAAAAAAAAAAAAA");
+            hit = Physics2D.Raycast(raycastOrigins.bottomLeft + Vector2.right *(horizontalRaySpacing * i), Vector2.down, rayLength, groundLayer);
+            if (hit.collider != null)
+            {
+                Log.Info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                return true;
+            }
+        }
+        Log.Info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+
+        return false;
+    }
 
     /// <summary>
     /// Get the bounds of the collision
@@ -80,7 +111,7 @@ public class PlayerController : MonoBehaviour
         horizontalRaycount = Mathf.Clamp(horizontalRaycount, 2, int.MaxValue);
 
         //-1 to get the number of spaces between raycasts
-        horizontalRaySpacing = bounds.size.y / (horizontalRaycount - 1);
+        horizontalRaySpacing = bounds.size.x / (horizontalRaycount - 1);
     }
 
 
