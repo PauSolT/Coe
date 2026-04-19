@@ -168,12 +168,13 @@ public class PlatformController : RaycastController
             {
                 //Depending of the direction of X, where the origin of rays should start
                 Vector2 rayOrigin = directionX == -1 ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
-                rayOrigin += Vector2.up * (verticalRaySpacing * i);
+                rayOrigin += Vector2.up * (horizontalRaySpacing * i);
 
                 RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, passengerMask);
 
                 //If something is left or right
-                if (hit && hit.distance != 0)
+                //if (hit && hit.distance != 0)
+                if (hit)
                 {
                     if (!passangers.Contains(hit.transform))
                     {
