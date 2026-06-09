@@ -27,7 +27,7 @@ public class HealthComponent : MonoBehaviour
     /// <returns>Returns the damage dealt to health.</returns>
     public void TakeDamage(float damage)
     {
-        Log.Info($"{gameObject.name} Taking {damage} damage", this);
+        Log.Info($"{gameObject.name} Taking {damage} damage", LogCategory.Health, this);
         DecreaseHealth(damage);
     }
 
@@ -57,7 +57,7 @@ public class HealthComponent : MonoBehaviour
     /// <returns>Returns the effective healing done.</returns>
     public float Heal(float healing)
     {
-        Log.Info($"Healing {healing}", this);
+        Log.Info($"Healing {healing}", LogCategory.Health, this);
         float previousHealth = CurrentHealth;
 
         CurrentHealth += healing;

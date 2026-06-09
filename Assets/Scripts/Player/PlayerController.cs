@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
     void Move(Vector2 input)
     {
-        Log.Info($"Player moving: {input}", this);
+        Log.Info($"Player moving: {input}", LogCategory.Input, this);
         direction = input.x;
     }
 
@@ -57,12 +57,12 @@ public class PlayerController : MonoBehaviour
         {
             rigidbody2d.linearVelocityY = moveSpeed;
         }
-        Log.Info($"Player jumped", this);
+        Log.Info($"Player jumped", LogCategory.Input, this);
     }
 
     void CancelJump()
     {
-        Log.Info($"Player canceled jumped", this);
+        Log.Info($"Player canceled jumped", LogCategory.Input, this);
     }
 
     bool CheckGround()
@@ -72,15 +72,12 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D hit;
         for (int i = 0; i < horizontalRaycount; i++)
         {
-            Log.Info("HOOOLLAAAAAAAAAAAAAAAAAA");
             hit = Physics2D.Raycast(raycastOrigins.bottomLeft + Vector2.right *(horizontalRaySpacing * i), Vector2.down, rayLength, groundLayer);
             if (hit.collider != null)
             {
-                Log.Info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 return true;
             }
         }
-        Log.Info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 
         return false;
     }

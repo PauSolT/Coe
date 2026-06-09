@@ -13,7 +13,7 @@ public abstract class Element : MonoBehaviour
 
     public virtual void Init()
     {
-        Log.Info($"{name} Init", this);
+        Log.Info($"{name} Init", LogCategory.Elements ,this);
         InitAbilityData();
         PopulateEvents();
     }
@@ -85,7 +85,7 @@ public abstract class Element : MonoBehaviour
         {
             Actives.Add(active);
             Log.Info($"Ability {active}" +
-                $"has been added to {data.elementName}");
+                $"has been added to {data.elementName}", LogCategory.Elements);
         }
         else
         {

@@ -7,7 +7,7 @@ public class FirePassive : PassiveAbility
     {
         base.Init(owner);
         
-        Log.Info($"Initializing fire passive with this data: {data}");
+        Log.Info($"Initializing fire passive with this data: {data}", LogCategory.Elements);
         owner.TryGetComponent(out healthComponent);
         owner.TryGetComponent(out Player player);
         FireElement element = player.GetSpecificElement<FireElement>();
