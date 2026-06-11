@@ -28,9 +28,21 @@ public class TimerManager : MonoBehaviour
         for (int i = timers.Count - 1; i >= 0; i--)
         {
             Timer timer = timers[i];
-            timer.CurrentTime -= Time.deltaTime;
 
-            if (timer.CurrentTime < 0 )
+            if (timer.IsCancelled)
+            {
+                timers.Remove(timer);
+                continue;
+            }
+
+            if (timer.IsPaused)
+            {
+                continue;
+            }
+
+            timer.UpdateTimer(Time.deltaTime);
+
+            if (timer.IsFinished )
             {
                 timer.OnTimerEnd?.Invoke();
                 timers.Remove(timer);
@@ -52,9 +64,26 @@ public class TimerManager : MonoBehaviour
     /// </summary>
     /// <param name="duration">Duration of the timer.</param>
     /// <param name="onEnd">Action that executes when the timer ends.</param>
-    /// <returns>Returns the damage dealt to health.</returns>
-    public void StartTimer(float duration, Action onEnd)
+    /// <returns>Returns the timer.</returns>
+    public Timer StartTimer(float duration, Action onEnd)
     {
-        timers.Add(new Timer(duration, onEnd));
+        Timer timer = new Timer(duration, onEnd);
+        timers.Add(timer);
+        return timer;
+    }
+
+    /// <summary>
+    /// Create a new tick timer
+    /// </summary>
+    /// <param name="duration">Duration of the timer.</param>
+    /// <param name="tickFrequency">Frequency of the ticks</param>
+    /// <param name="onTick">Action that executes every tick</param>
+    /// <param name="onEnd">Action that executes when the timer ends.</param>
+    /// <returns>Returns the timer.</returns>
+    public Timer StartTickTimer(float duration, float tickFrequency, Action onTick, Action onEnd = null)
+    {
+        Timer timer = new Timer(duration, onEnd, tickFrequency, onTick);
+        timers.Add(timer);
+        return timer;
     }
 }
