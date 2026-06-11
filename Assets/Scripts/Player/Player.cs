@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
         }
         elements[currentElement].OnElementEquip?.Invoke(gameObject);
         elements[currentElement].Actives[0].AbilityUse();
+        elements[currentElement].Actives[1].AbilityUse();
     }
 
     void Update()

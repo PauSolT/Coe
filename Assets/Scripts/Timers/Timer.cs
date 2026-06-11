@@ -23,6 +23,7 @@ public class Timer
         OnTimerEnd = onTimerEnd;
         OnTick = onTick;
         OnTimerEnd = onTimerEnd;
+        TickFrequency = tickFrequency;
 
         //If this is a tick timer, calculate next tick time
         if (TickFrequency > 0)

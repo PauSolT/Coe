@@ -9,7 +9,7 @@ public class DamageOverTime : MonoBehaviour
     float damageDuration;
     float damageFrequency;
 
-    public void Init(GameObject owner, float damage, float damageDuration, float damageFrequency, float duration = 0.1f)
+    public void Init(GameObject owner, float damage, float damageFrequency, float damageDuration = 0f, float duration = 0.1f)
     {
         this.owner = owner;
         this.damage = damage;
