@@ -1,6 +1,8 @@
 using Unity.VisualScripting;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.Windows;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -10,6 +12,8 @@ public class PlayerController : MonoBehaviour
     [field: SerializeField] int horizontalRaycount = 4;
     [field: SerializeField] float moveSpeed = 6f;
     float direction = 0f;
+
+    bool facingRight = true;
 
     const float skinWidth = 0.015f;
     const float rayLength = 0.15f;
@@ -49,6 +53,21 @@ public class PlayerController : MonoBehaviour
     {
         Log.Info($"Player moving: {input}", LogCategory.Input, this);
         direction = input.x;
+
+        if (direction < 0 && facingRight)
+            Flip();
+        if (direction > 0 && !facingRight)
+            Flip();
+            
+    }
+
+    void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
+        Log.Info($"Player flipped. Facing right: {facingRight}", LogCategory.Input, this);
     }
 
     void Jump()

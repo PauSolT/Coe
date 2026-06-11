@@ -19,6 +19,14 @@ public enum LogCategory
     All = ~0
 }
 
+public enum LogLevel
+{
+    Info,
+    Warn,
+    Error
+}
+
+
 [CreateAssetMenu(fileName = "LogSettings", menuName = "Logging/Log Settings")]
 public class LogSettings : ScriptableObject
 {

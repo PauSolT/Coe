@@ -48,7 +48,8 @@ public static class Log
     public static void Info(string message,
         LogCategory category = LogCategory.Default,
         Object context = null,
-        [CallerFilePath] string filePath = "")
+        [CallerFilePath] string filePath = "",
+        LogLevel level = LogLevel.Info)
     {
         if (!IsEnabled) return;
 
@@ -60,8 +61,24 @@ public static class Log
 
         string className = Path.GetFileNameWithoutExtension(filePath);
         string colorHex = GetColorHex(category);
+        string formattedMessage = "";
+        switch (level)
+        {
+            case LogLevel.Info:
+            default:
+                formattedMessage = $"<color={colorHex}><b>[INFO][{category}]</b></color> [{className}]: {message}";
+                UnityEngine.Debug.Log(formattedMessage, context);
+                break;
+            case LogLevel.Warn:
+                formattedMessage = $"<color={colorHex}><b>[WARN][{category}]</b></color> [{className}]: {message}";
+                UnityEngine.Debug.LogWarning(formattedMessage, context);
+                break;
+            case LogLevel.Error:
+                formattedMessage = $"<color={colorHex}><b>[ERROR][{category}]</b></color> [{className}]: {message}";
+                UnityEngine.Debug.LogError(formattedMessage, context);
+                break;
+        }
 
-        string formattedMessage = $"<color={colorHex}><b>[INFO][{category}]</b></color> [{className}]: {message}";
-        UnityEngine.Debug.Log(formattedMessage, context);
+       
     }
 }
