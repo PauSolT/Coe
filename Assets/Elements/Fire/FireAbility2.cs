@@ -5,7 +5,7 @@ public class FireAbility2 : ActiveAbility
     protected sealed override void Execute()
     {
         //TODO
-        //targeting system
+        //targeting system with mouse
 
         GameObject target = GameObject.Find("Enemy");
 
@@ -13,7 +13,8 @@ public class FireAbility2 : ActiveAbility
         GameObject instance = Object.Instantiate(
             data.prefab,
             target.transform.position,
-            target.transform.localRotation);
+            target.transform.localRotation,
+            target.transform);
         DamageOverTime damage = instance.GetComponentInChildren<DamageOverTime>();
         damage.Init(owner,
             data.power,

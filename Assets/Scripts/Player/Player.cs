@@ -8,13 +8,13 @@ public class Player : MonoBehaviour
     int currentElement = 0;
     void Start()
     {
+        elements.AddRange(GetComponentsInChildren<Element>());
         foreach (Element element in elements)
         {
             element.Init();
         }
         elements[currentElement].OnElementEquip?.Invoke(gameObject);
-        elements[currentElement].Actives[0].AbilityUse();
-        elements[currentElement].Actives[1].AbilityUse();
+        elements[currentElement].Actives[2].AbilityUse();
     }
 
     void Update()

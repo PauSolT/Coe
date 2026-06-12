@@ -42,7 +42,7 @@ public class TimerManager : MonoBehaviour
 
             timer.UpdateTimer(Time.deltaTime);
 
-            if (timer.IsFinished )
+            if (timer.IsFinished)
             {
                 timer.OnTimerEnd?.Invoke();
                 timers.Remove(timer);
