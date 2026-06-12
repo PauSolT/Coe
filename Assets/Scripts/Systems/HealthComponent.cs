@@ -6,9 +6,12 @@ public class HealthComponent : MonoBehaviour
     [field: SerializeField] public float MaxHealth { get; private set; } = 100f;
     [field: SerializeField] public float CurrentHealth { get; private set; } = 10f;
 
+    [field: SerializeField] public bool Invulnerable { get; set; } = false;
+
 
     public event Action<float, float> OnHealthChanged;
     public event Action OnDeath;
+    public event Action OnHit;
 
     private void Start()
     {
@@ -38,6 +41,12 @@ public class HealthComponent : MonoBehaviour
     /// <returns>Returns the effective damage dealt to health.</returns>
     public float DecreaseHealth(float damage)
     {
+        OnHit?.Invoke();
+        if (Invulnerable)
+        {
+            return -1f;
+        }
+
         CurrentHealth -= damage;
 
         OnHealthChanged?.Invoke(CurrentHealth, damage);

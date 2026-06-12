@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LogSettings
   m_EditorClassIdentifier: Assembly-CSharp::LogSettings
   isEnabled: 1
-  activeCategories: 50
+  activeCategories: 0
   categoryColors:
   - category: 1
     color: {r: 1, g: 1, b: 1, a: 1}
