@@ -21,18 +21,39 @@ public class PlayerController : MonoBehaviour
 
     BoxCollider2D capsuleCollider;
     RaycastOrigins raycastOrigins;
+    Player player;
 
     Rigidbody2D rigidbody2d;
     [field: SerializeField] LayerMask groundLayer;
 
-    void Start()
+    void Awake()
     {
         capsuleCollider = GetComponent<BoxCollider2D>();
         rigidbody2d = GetComponent<Rigidbody2D>();
+        player = GetComponent<Player>();
+    }
 
+    private void OnEnable()
+    {
         inputReader.MoveEvent += Move;
         inputReader.JumpEvent += Jump;
         inputReader.CancelJumpEvent += CancelJump;
+        inputReader.PreviousElementEvent += player.PreviousElement;
+        inputReader.NextElementEvent += player.NextElement;
+        inputReader.Ability1Event += player.UseAbility1;
+        inputReader.Ability2Event += player.UseAbility2;
+        inputReader.Ability3Event += player.UseAbility3;
+    }
+    private void OnDisable()
+    {
+        inputReader.MoveEvent -= Move;
+        inputReader.JumpEvent -= Jump;
+        inputReader.CancelJumpEvent -= CancelJump;
+        inputReader.PreviousElementEvent -= player.PreviousElement;
+        inputReader.NextElementEvent -= player.NextElement;
+        inputReader.Ability1Event -= player.UseAbility1;
+        inputReader.Ability2Event -= player.UseAbility2;
+        inputReader.Ability3Event -= player.UseAbility3;
     }
 
     void FixedUpdate()

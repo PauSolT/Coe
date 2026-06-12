@@ -12,6 +12,13 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
     public event Action<Vector2> MoveEvent;
     public event Action JumpEvent;
     public event Action CancelJumpEvent;
+    public event Action Ability1Event;
+    public event Action Ability2Event;
+    public event Action Ability3Event;
+    public event Action PreviousElementEvent;
+    public event Action NextElementEvent;
+
+
 
     private void OnEnable()
     {
@@ -84,5 +91,45 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
     public void OnSprint(InputAction.CallbackContext context)
     {
         //throw new NotImplementedException();
+    }
+
+    public void OnAbility1(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            Ability1Event?.Invoke();
+        }
+    }
+
+    public void OnAbility2(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            Ability2Event?.Invoke();
+        }
+    }
+
+    public void OnAbility3(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            Ability3Event?.Invoke();
+        }
+    }
+
+    public void OnPreviousElement(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            PreviousElementEvent?.Invoke();
+        }
+    }
+
+    public void OnNextElement(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            NextElementEvent?.Invoke();
+        }
     }
 }

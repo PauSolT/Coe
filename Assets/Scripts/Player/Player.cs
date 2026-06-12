@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
     public List<Element> elements;
     int currentElement = 0;
     void Start()
@@ -14,7 +13,6 @@ public class Player : MonoBehaviour
             element.Init();
         }
         elements[currentElement].OnElementEquip?.Invoke(gameObject);
-        elements[currentElement].Actives[2].AbilityUse();
     }
 
     void Update()
@@ -22,8 +20,9 @@ public class Player : MonoBehaviour
         
     }   
 
-    void PreviousElement()
+    public void PreviousElement()
     {
+
         elements[currentElement].OnElementUnequip?.Invoke();
         currentElement--;
         if (currentElement < 0)
@@ -31,10 +30,10 @@ public class Player : MonoBehaviour
             currentElement = elements.Count - 1;
         }
         elements[currentElement].OnElementEquip?.Invoke(gameObject);
-
+        Log.Info($"Switched to previous element:{elements[currentElement].name}", LogCategory.Elements);
     }
 
-    void NextElement()
+    public void NextElement()
     {
         elements[currentElement].OnElementUnequip?.Invoke();
         currentElement++;
@@ -43,6 +42,23 @@ public class Player : MonoBehaviour
             currentElement = 0;
         }
         elements[currentElement].OnElementEquip?.Invoke(gameObject);
+        Log.Info($"Switched to next element:{elements[currentElement].name}", LogCategory.Elements);
+    }
+
+    public void UseAbility1()
+    {
+        elements[currentElement].Actives[0].AbilityUse();
+        Log.Info($"Used ability 1 of element:{elements[currentElement].name}", LogCategory.Elements);
+    }
+    public void UseAbility2()
+    {
+        elements[currentElement].Actives[1].AbilityUse();
+        Log.Info($"Used ability 2 of element:{elements[currentElement].name}", LogCategory.Elements);
+    }
+    public void UseAbility3()
+    {
+        elements[currentElement].Actives[2].AbilityUse();
+        Log.Info($"Used ability 3 of element:{elements[currentElement].name}", LogCategory.Elements);
     }
 
     public T GetSpecificElement<T>() where T : Element
