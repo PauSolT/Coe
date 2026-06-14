@@ -47,18 +47,18 @@ public class Player : MonoBehaviour
 
     public void UseAbility1()
     {
+        Log.Info($"Pressed ability 1 of element:{elements[currentElement].name}", LogCategory.Elements);
         elements[currentElement].Actives[0].AbilityUse();
-        Log.Info($"Used ability 1 of element:{elements[currentElement].name}", LogCategory.Elements);
     }
     public void UseAbility2()
     {
+        Log.Info($"Pressed ability 2 of element:{elements[currentElement].name}", LogCategory.Elements);
         elements[currentElement].Actives[1].AbilityUse();
-        Log.Info($"Used ability 2 of element:{elements[currentElement].name}", LogCategory.Elements);
     }
     public void UseAbility3()
     {
+        Log.Info($"Pressed ability 3 of element:{elements[currentElement].name}", LogCategory.Elements);
         elements[currentElement].Actives[2].AbilityUse();
-        Log.Info($"Used ability 3 of element:{elements[currentElement].name}", LogCategory.Elements);
     }
 
     public T GetSpecificElement<T>() where T : Element
