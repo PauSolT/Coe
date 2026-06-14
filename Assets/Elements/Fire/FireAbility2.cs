@@ -4,10 +4,15 @@ public class FireAbility2 : ActiveAbility
 {
     protected sealed override void Execute()
     {
-        //TODO
-        //targeting system with mouse
+        ITargetable targetable = TargetSystem.Instance.CurrentTarget;
 
-        GameObject target = GameObject.Find("Enemy");
+        if (targetable == null)
+        {
+            Log.Info($"No target selected for ability {data.name}! {data.name} will not be used!", LogCategory.Elements);
+            return;
+        }
+
+        GameObject target = targetable.GetGameObject();
 
         Log.Info($"{owner.name} has executed {data.name}", LogCategory.Elements);
         GameObject instance = Object.Instantiate(
@@ -19,7 +24,8 @@ public class FireAbility2 : ActiveAbility
         damage.Init(owner,
             data.power,
             data.tickFrequency,
-            duration: data.duration);
+            duration: data.duration,
+            onTarget: true);
     }
 
 }

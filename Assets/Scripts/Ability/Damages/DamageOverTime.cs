@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class DamageOverTime : MonoBehaviour
 {
@@ -9,12 +10,19 @@ public class DamageOverTime : MonoBehaviour
     float damageDuration;
     float damageFrequency;
 
-    public void Init(GameObject owner, float damage, float damageFrequency, float damageDuration = 0f, float duration = 0.1f)
+    public void Init(GameObject owner, float damage, float damageFrequency, float damageDuration = 0f, float duration = 0.1f, bool onTarget = false)
     {
         this.owner = owner;
         this.damage = damage;
         this.damageDuration = damageDuration;
         this.damageFrequency = damageFrequency;
+        AbilityPrefabRoot root = GetComponentInParent<AbilityPrefabRoot>();
+
+        if (onTarget)
+        {
+            HealthComponent health = GetComponentInParent<HealthComponent>();
+            targetsToDamage.Add(health);
+        }
 
         TimerManager.Instance.StartTickTimer(duration,
             damageFrequency,
@@ -25,7 +33,7 @@ public class DamageOverTime : MonoBehaviour
                     health.TakeDamage(damage);
                 }
             },
-            onEnd: () => Destroy(transform.root.gameObject));
+            onEnd: () => root.Destroy());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

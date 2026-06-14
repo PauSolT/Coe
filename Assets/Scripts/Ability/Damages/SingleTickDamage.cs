@@ -7,12 +7,19 @@ public class SingleTickDamage : MonoBehaviour
     GameObject owner;
     float damage;
 
-    public void Init(GameObject owner, float damage, float duration = 0.1f)
+    public void Init(GameObject owner, float damage, float duration = 0.1f, bool onTarget = false)
     {
         this.owner = owner;
         this.damage = damage;
+        AbilityPrefabRoot root = GetComponentInParent<AbilityPrefabRoot>();
 
-        TimerManager.Instance.StartTimer(duration, () => Destroy(transform.root.gameObject));
+        if (onTarget)
+        {
+            HealthComponent health = GetComponentInParent<HealthComponent>();
+            health.TakeDamage(damage);
+        }
+
+        TimerManager.Instance.StartTimer(duration, () => root.Destroy());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
