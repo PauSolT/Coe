@@ -11,7 +11,6 @@ public class TimerManager : MonoBehaviour
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
-            return;
         }
         Instance = this;
 
