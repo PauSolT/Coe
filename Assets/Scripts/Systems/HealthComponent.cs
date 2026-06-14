@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class HealthComponent : MonoBehaviour
+public class HealthComponent : MonoBehaviour, ITargetable
 {
     [field: SerializeField] public float MaxHealth { get; private set; } = 100f;
     [field: SerializeField] public float CurrentHealth { get; private set; } = 10f;
@@ -88,6 +88,8 @@ public class HealthComponent : MonoBehaviour
         OnDeath?.Invoke();
     }
 
-
-
+    public GameObject GetGameObject()
+    {
+        return gameObject;
+    }
 }
