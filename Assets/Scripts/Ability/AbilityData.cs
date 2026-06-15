@@ -19,7 +19,7 @@ public class AbilityData : ScriptableObject
     public GameObject prefab;
 
     [Header("DoT")]
-    [Tooltip("Frequency of ticks")]
+    [Tooltip("Frequency of ticks for DoT damage")]
     public float tickFrequency;
 
     public override string ToString()

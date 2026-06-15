@@ -28,7 +28,10 @@ public class SingleTickDamage : MonoBehaviour
         {
             alreadyDamaged.Add(collision);
             collision.TryGetComponent(out HealthComponent health);
-            health.TakeDamage(damage);
+            if (health != null)
+            {
+                health.TakeDamage(damage);
+            }
         }
     }
 
