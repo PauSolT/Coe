@@ -8,6 +8,7 @@ public class HealthComponent : MonoBehaviour, ITargetable
 
     [field: SerializeField] public bool Invulnerable { get; set; } = false;
 
+    [field: SerializeField] public bool IsTargetable { get; private set; } = true;
 
     public event Action<float, float> OnHealthChanged;
     public event Action OnDeath;
