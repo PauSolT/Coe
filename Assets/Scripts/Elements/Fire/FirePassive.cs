@@ -13,7 +13,7 @@ public class FirePassive : PassiveAbility
 
         foreach (ActiveAbility ability in element.Actives)
         {
-            ability.OnBeforeLaunch += HealOnAbilityCast;
+            ability.OnAfterLaunch += HealOnAbilityCast;
         }
 
     }

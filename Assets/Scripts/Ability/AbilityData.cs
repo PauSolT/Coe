@@ -9,8 +9,10 @@ public class AbilityData : ScriptableObject
     public string abilityName;
     [Tooltip("Description of the ability")]
     public string description;
-    [Tooltip("Power of the ability. The scale is from 0(0%) to 1(100%)")]
+    [Tooltip("Power of the ability. The scale is from 1(1%) to 100(100%)")]
     public float power;
+    [Tooltip("Secondary Power of the ability. The scale is from 1(1%) to 100(100%). For abilities that have two effects")]
+    public float secondaryPower;
     [Tooltip("Cooldown of the ability in seconds")]
     public float cooldown;
     [Tooltip("Duration of the ability in seconds")]
@@ -19,8 +21,16 @@ public class AbilityData : ScriptableObject
     public GameObject prefab;
 
     [Header("DoT")]
-    [Tooltip("Frequency of ticks for DoT damage")]
+    [Tooltip("Frequency of ticks for DoT damage in seconds")]
     public float tickFrequency;
+
+    [Header("Empoered states")]
+    [Tooltip("Empowered power of the ability. The scale is from 1(1%) to 1(100%). It adds to the original power")]
+    public float empoweredPower;
+    [Tooltip("Empowered secondary power of the ability. The scale is from 1(1%) to 1(100%). It adds to the original power")]
+    public float empoweredSecondaryPower;
+    [Tooltip("Empowered duration of the ability in seconds. It adds to the original seconds")]
+    public float empoweredDuration;
 
     public override string ToString()
     {

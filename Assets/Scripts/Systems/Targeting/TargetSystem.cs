@@ -40,7 +40,7 @@ public class TargetSystem : MonoBehaviour
         {
             ITargetable hitTarget = hit.collider.GetComponentInParent<ITargetable>();
 
-            if (hitTarget != null && hitTarget != CurrentTarget)
+            if (hitTarget != null && hitTarget != CurrentTarget && hitTarget.IsTargetable)
             {
                 SetTarget(hitTarget);
             }

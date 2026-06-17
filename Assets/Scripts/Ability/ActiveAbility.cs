@@ -36,16 +36,19 @@ public class ActiveAbility : Ability
         }
 
         OnBeforeLaunch?.Invoke();
-        Execute();
-        OnAfterLaunch?.Invoke();
+        if (Execute())
+        {
+            OnAfterLaunch?.Invoke();
+        }
     }
 
     /// <summary>
     /// Contains the ability logic.
     /// </summary>
-    protected virtual void Execute()
+    protected virtual bool Execute()
     {
-        
+        Log.Info($"{owner.name} has executed {data.name}", LogCategory.Elements);
+        return true;
     }
 
     /// <summary>
@@ -55,6 +58,22 @@ public class ActiveAbility : Ability
     {
         onCooldown = true;
         cooldownTimer = TimerManager.Instance.StartTimer(data.cooldown, () => onCooldown = false);
+    }
+
+    protected bool HasTarget()
+    {
+        ITargetable targetable = TargetSystem.Instance.CurrentTarget;
+
+        if (targetable == null)
+        {
+            Log.Info($"No target selected for ability {data.name}! {data.name} will not be used!", LogCategory.Elements);
+        }
+        return targetable != null;
+    }
+
+    protected GameObject GetCurrentTarget()
+    {
+        return TargetSystem.Instance.CurrentTarget.GetGameObject();
     }
 
 }

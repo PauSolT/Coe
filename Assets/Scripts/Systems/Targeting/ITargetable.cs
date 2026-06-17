@@ -5,5 +5,6 @@ using UnityEngine;
 /// </summary>
 public interface ITargetable
 {
+    bool IsTargetable { get; }
     GameObject GetGameObject();
 }

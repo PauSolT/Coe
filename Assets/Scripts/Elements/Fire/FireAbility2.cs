@@ -2,19 +2,17 @@
 
 public class FireAbility2 : ActiveAbility
 {
-    protected sealed override void Execute()
+    protected sealed override bool Execute()
     {
-        ITargetable targetable = TargetSystem.Instance.CurrentTarget;
-
-        if (targetable == null)
+        base.Execute();
+       
+        if (!HasTarget())
         {
-            Log.Info($"No target selected for ability {data.name}! {data.name} will not be used!", LogCategory.Elements);
-            return;
+            return false;
         }
 
-        GameObject target = targetable.GetGameObject();
+        GameObject target = GetCurrentTarget();
 
-        Log.Info($"{owner.name} has executed {data.name}", LogCategory.Elements);
         GameObject instance = Object.Instantiate(
             data.prefab,
             target.transform.position,
@@ -26,6 +24,9 @@ public class FireAbility2 : ActiveAbility
             data.tickFrequency,
             duration: data.duration,
             onTarget: true);
+
+        return true;
+
     }
 
 }
