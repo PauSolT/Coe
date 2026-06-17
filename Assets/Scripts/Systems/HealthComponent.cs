@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthComponent : MonoBehaviour, ITargetable
@@ -14,6 +15,8 @@ public class HealthComponent : MonoBehaviour, ITargetable
     public event Action OnDeath;
     public event Action OnHit;
 
+    private List<ShieldComponent> activeShields = new List<ShieldComponent>();
+
     private void Start()
     {
         Init();
@@ -22,6 +25,7 @@ public class HealthComponent : MonoBehaviour, ITargetable
     public void Init()
     {
         CurrentHealth = MaxHealth;
+        activeShields.Clear();
     }
 
     /// <summary>
@@ -35,6 +39,63 @@ public class HealthComponent : MonoBehaviour, ITargetable
         DecreaseHealth(damage);
     }
 
+
+    /// <summary>
+    /// Adds a shield to the user
+    /// </summary>
+    /// <param name="shieldId">Id of the- shield (normally the name of the ability)</param>
+    /// <param name="amount">Amount of shield (power of the ability)</param>
+    /// <param name="duration">Duration of the shield. If infinite, -1</param>
+    /// <param name="onExpired">What to do when the shield expires (either damage or duration)</param>
+    public void AddShield(string shieldId, float amount, float duration = -1f, Action onExpired = null)
+    {
+        ShieldComponent existingShield = activeShields.Find(s => s.Id == shieldId);
+
+        if (existingShield != null)
+        {
+            // Refresh the existing shield amount
+            existingShield.Amount = amount;
+
+            // If it had a timer running, cancel it so we can restart the duration
+            if (existingShield.ShieldTimer != null)
+            {
+                existingShield.ShieldTimer.Cancel();
+                existingShield.ShieldTimer = null;
+            }
+
+            if (duration > 0f)
+            {
+                existingShield.ShieldTimer = TimerManager.Instance.StartTimer(duration, () => ExpireShield(existingShield));
+            }
+
+            Log.Info($"Refreshed Shield {shieldId} to {amount}", LogCategory.Health, this);
+        }
+        else
+        {
+            ShieldComponent newShield = new ShieldComponent(shieldId, amount, onExpired);
+
+            if (duration > 0f)
+            {
+                newShield.ShieldTimer = TimerManager.Instance.StartTimer(duration, () => ExpireShield(newShield));
+            }
+
+            activeShields.Add(newShield);
+            Log.Info($"Added Shield {shieldId} for {amount}", LogCategory.Health, this);
+        }
+    }
+
+    /// <summary>
+    /// Called automatically by the TimerManager when a shield's time runs out.
+    /// </summary>
+    private void ExpireShield(ShieldComponent shield)
+    {
+        if (activeShields.Contains(shield))
+        {
+            activeShields.Remove(shield);
+            shield.OnDestroyedOrExpired?.Invoke();
+        }
+    }
+
     /// <summary>
     /// Decreases the health of the user.
     /// </summary>
@@ -43,21 +104,47 @@ public class HealthComponent : MonoBehaviour, ITargetable
     public float DecreaseHealth(float damage)
     {
         OnHit?.Invoke();
-        if (Invulnerable)
+        if (Invulnerable) return -1f;
+
+        float remainingDamage = damage;
+
+
+        // Iterate backwards because we are removing items from the list
+        for (int i = activeShields.Count - 1; i >= 0; i--)
         {
-            return -1f;
+            ShieldComponent shield = activeShields[i];
+
+            if (shield.Amount > remainingDamage)
+            {
+                // Damage fully absorbed
+                shield.Amount -= remainingDamage;
+                remainingDamage = 0;
+                break; 
+            }
+            else
+            {
+                remainingDamage -= shield.Amount;
+
+                shield.ShieldTimer?.Cancel();
+                shield.OnDestroyedOrExpired?.Invoke();
+
+                activeShields.RemoveAt(i);
+            }
         }
 
-        CurrentHealth -= damage;
-
-        OnHealthChanged?.Invoke(CurrentHealth, damage);
-
-        if (CurrentHealth < 0)
+        // Apply leftover damage to actual health
+        if (remainingDamage > 0)
         {
-            Die();
+            CurrentHealth -= remainingDamage;
+            OnHealthChanged?.Invoke(CurrentHealth, remainingDamage);
+
+            if (CurrentHealth <= 0)
+            {
+                Die();
+            }
         }
 
-        return CurrentHealth - damage;
+        return remainingDamage;
     }
 
     /// <summary>
