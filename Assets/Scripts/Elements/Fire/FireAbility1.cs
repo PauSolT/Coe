@@ -3,9 +3,9 @@ using UnityEngine;
 public class FireAbility1 : ActiveAbility
 {
 
-    protected sealed override void Execute()
+    protected sealed override bool Execute()
     {
-        Log.Info($"{owner.name} has executed {data.name}", LogCategory.Elements);
+        base.Execute();
         GameObject instance = Object.Instantiate(
             data.prefab, 
             owner.transform.position, 
@@ -14,6 +14,8 @@ public class FireAbility1 : ActiveAbility
         damage.Init(owner,
             data.power,
             data.duration);
+
+        return true;
     }
 
 }
