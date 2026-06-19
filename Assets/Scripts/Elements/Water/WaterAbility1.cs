@@ -21,12 +21,11 @@ public class WaterAbility1 : WaterAbility
             finalSecondaryPower += data.empoweredSecondaryPower;
         }
 
-        GameObject target = GetCurrentTarget();
         GameObject instance = Object.Instantiate(
             data.prefab,
-            target.transform.position,
-            target.transform.localRotation);
-        SingleTickDamage damage = instance.GetComponentInChildren<SingleTickDamage>();
+            owner.transform.position,
+            owner.transform.localRotation);
+        SingleDamageToTarget damage = instance.GetComponentInChildren<SingleDamageToTarget>();
         damage.Init(owner,
             finalPower,
             finalDuration);

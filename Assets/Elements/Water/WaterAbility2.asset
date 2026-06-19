@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilityData
   abilityName: wa2
   description: wa2
-  power: 0
-  secondaryPower: 4
+  power: 15
+  secondaryPower: 6
   cooldown: 12
-  duration: 6
+  duration: 4
   prefab: {fileID: 1396748803335550308, guid: 4556209fe4810024eb54ecf1d379044b, type: 3}
   tickFrequency: 0
+  empoweredPower: 5
+  empoweredSecondaryPower: 3
+  empoweredDuration: 2

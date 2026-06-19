@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 291421912623465221}
   - component: {fileID: 1704494583227168927}
   - component: {fileID: 3762112370479071020}
-  - component: {fileID: 4577953646714210508}
+  - component: {fileID: 6941413106923218688}
   m_Layer: 0
   m_Name: Circle
   m_TagString: Untagged
@@ -173,8 +173,8 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
---- !u!114 &4577953646714210508
+  m_Radius: 5
+--- !u!114 &6941413106923218688
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -183,6 +183,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7759766208345481600}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce1033be915a4b343b7f32d0e79c8953, type: 3}
+  m_Script: {fileID: 11500000, guid: cc618069e840941408ab5e90b03ea342, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SingleTickDamage
+  m_EditorClassIdentifier: Assembly-CSharp::DelayedSingleDamage

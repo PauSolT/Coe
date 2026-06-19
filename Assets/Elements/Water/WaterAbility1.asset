@@ -17,7 +17,7 @@ MonoBehaviour:
   power: 10
   secondaryPower: 0
   cooldown: 5
-  duration: 0.3
+  duration: 0.7
   prefab: {fileID: 8512586337471173579, guid: 6a042b97603d4fe4bbe928dad1a7be71, type: 3}
   tickFrequency: 0
   empoweredPower: 5
