@@ -64,9 +64,9 @@ public class TimerManager : MonoBehaviour
     /// <param name="duration">Duration of the timer.</param>
     /// <param name="onEnd">Action that executes when the timer ends.</param>
     /// <returns>Returns the timer.</returns>
-    public Timer StartTimer(float duration, Action onEnd)
+    public Timer StartTimer(float duration, Action onEnd, Action<float> update = null)
     {
-        Timer timer = new Timer(duration, onEnd);
+        Timer timer = new Timer(duration, onEnd, onUpdate: update);
         timers.Add(timer);
         return timer;
     }
@@ -79,9 +79,9 @@ public class TimerManager : MonoBehaviour
     /// <param name="onTick">Action that executes every tick</param>
     /// <param name="onEnd">Action that executes when the timer ends.</param>
     /// <returns>Returns the timer.</returns>
-    public Timer StartTickTimer(float duration, float tickFrequency, Action onTick, Action onEnd = null)
+    public Timer StartTickTimer(float duration, float tickFrequency, Action onTick, Action onEnd = null, Action<float> update = null)
     {
-        Timer timer = new Timer(duration, onEnd, tickFrequency, onTick);
+        Timer timer = new Timer(duration, onEnd, tickFrequency, onTick, update);
         timers.Add(timer);
         return timer;
     }

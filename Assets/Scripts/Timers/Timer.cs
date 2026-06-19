@@ -11,18 +11,19 @@ public class Timer
     private float nextTickTime;
     public Action OnTimerEnd;
     public Action OnTick;
+    public Action<float> OnUpdate;
 
     public bool IsCancelled { get; private set; }
     public bool IsPaused { get; private set; }
     public bool IsFinished => CurrentTime <= 0;
 
-    public Timer(float totalTime, Action onTimerEnd, float tickFrequency = 0f, Action onTick = null)
+    public Timer(float totalTime, Action onTimerEnd, float tickFrequency = 0f, Action onTick = null, Action<float> onUpdate = null)
     {
         TotalTime = totalTime;
         CurrentTime = totalTime;
         OnTimerEnd = onTimerEnd;
         OnTick = onTick;
-        OnTimerEnd = onTimerEnd;
+        OnUpdate = onUpdate;
         TickFrequency = tickFrequency;
 
         //If this is a tick timer, calculate next tick time
@@ -38,9 +39,11 @@ public class Timer
     {
         CurrentTime -= deltaTime;
 
+        OnUpdate?.Invoke(deltaTime);
+
         if (TickFrequency > 0 && OnTick != null)
         {
-            if (CurrentTime <= nextTickTime)
+            while (CurrentTime <= nextTickTime && nextTickTime > 0)
             {
                 OnTick?.Invoke();
                 nextTickTime -= TickFrequency;
@@ -63,7 +66,7 @@ public class Timer
     }
 
     /// <summary>
-    /// Returns the progress of the timer from 1 to 0
+    /// Returns the progress of the timer from 0 to 1
     /// </summary>
     /// Works like this because timer goes from X to 0
     public float ProgressAscending
