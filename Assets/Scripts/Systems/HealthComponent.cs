@@ -15,7 +15,7 @@ public class HealthComponent : MonoBehaviour, ITargetable
     public event Action OnDeath;
     public event Action OnHit;
 
-    private List<ShieldComponent> activeShields = new List<ShieldComponent>();
+    [field: SerializeField] private List<ShieldComponent> activeShields = new List<ShieldComponent>();
 
     private void Start()
     {
