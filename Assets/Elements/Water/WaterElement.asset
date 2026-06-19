@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd9f2138808b8b94483fa4c2f75f3aee, type: 3}
   m_Name: WaterElement
   m_EditorClassIdentifier: Assembly-CSharp::ElementData
+  color: {r: 0.3063813, g: 0.6779191, b: 0.8018868, a: 1}
   elementName: Water
   description: Element
   abilityData:

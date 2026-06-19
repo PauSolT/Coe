@@ -4,9 +4,11 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public List<Element> elements;
+    SpriteRenderer spriteRenderer;
     int currentElement = 0;
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         elements.AddRange(GetComponentsInChildren<Element>());
         foreach (Element element in elements)
         {
@@ -30,6 +32,7 @@ public class Player : MonoBehaviour
             currentElement = elements.Count - 1;
         }
         elements[currentElement].OnElementEquip?.Invoke(gameObject);
+        ChangePlayerColor();
         Log.Info($"Switched to previous element:{elements[currentElement].name}", LogCategory.Elements);
     }
 
@@ -42,6 +45,7 @@ public class Player : MonoBehaviour
             currentElement = 0;
         }
         elements[currentElement].OnElementEquip?.Invoke(gameObject);
+        ChangePlayerColor();
         Log.Info($"Switched to next element:{elements[currentElement].name}", LogCategory.Elements);
     }
 
@@ -71,5 +75,10 @@ public class Player : MonoBehaviour
             }
         }
         return null;
+    }
+
+    private void ChangePlayerColor()
+    {
+        spriteRenderer.color = elements[currentElement].GetColor();
     }
 }

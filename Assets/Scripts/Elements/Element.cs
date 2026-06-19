@@ -18,6 +18,11 @@ public abstract class Element : MonoBehaviour
         PopulateEvents();
     }
 
+    public Color GetColor()
+    {
+        return data.color;
+    }
+
     private void OnDisable()
     {
         EraseEvents();

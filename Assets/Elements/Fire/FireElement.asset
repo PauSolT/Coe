@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd9f2138808b8b94483fa4c2f75f3aee, type: 3}
   m_Name: FireElement
   m_EditorClassIdentifier: Assembly-CSharp::ElementData
+  color: {r: 0.8490566, g: 0.13216448, b: 0.13216448, a: 1}
   elementName: Fire
   description: Element
   abilityData:
