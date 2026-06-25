@@ -1,9 +1,4 @@
-using Unity.VisualScripting;
-using UnityEditor.Tilemaps;
 using UnityEngine;
-using UnityEngine.UIElements;
-using UnityEngine.Windows;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour
@@ -58,12 +53,11 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-     
+        rigidbody2d.linearVelocityX = moveSpeed * direction;
     }
 
     private void Update()
     {
-        rigidbody2d.linearVelocityX = moveSpeed * direction;
         for (int i = 0; i < horizontalRaycount; i++)
         {
             Debug.DrawRay(raycastOrigins.bottomLeft + Vector2.right * (horizontalRaySpacing * i), Vector2.down * rayLength, Color.red);

@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        elements.AddRange(GetComponentsInChildren<Element>());
+        elements = new List<Element>(GetComponentsInChildren<Element>());
         foreach (Element element in elements)
         {
             element.Init();
@@ -49,22 +49,47 @@ public class Player : MonoBehaviour
         Log.Info($"Switched to next element:{elements[currentElement].name}", LogCategory.Elements);
     }
 
+    /// <summary>
+    /// Function to call ability 1 in input
+    /// </summary>
     public void UseAbility1()
     {
-        Log.Info($"Pressed ability 1 of element:{elements[currentElement].name}", LogCategory.Elements);
-        elements[currentElement].Actives[0].AbilityUse();
+        UseAbility(0);
     }
+    /// <summary>
+    /// Function to call ability 2 in input
+    /// </summary>
     public void UseAbility2()
     {
-        Log.Info($"Pressed ability 2 of element:{elements[currentElement].name}", LogCategory.Elements);
-        elements[currentElement].Actives[1].AbilityUse();
+        UseAbility(1);
     }
+    /// <summary>
+    /// Function to call ability 3 in input
+    /// </summary>
     public void UseAbility3()
     {
-        Log.Info($"Pressed ability 3 of element:{elements[currentElement].name}", LogCategory.Elements);
-        elements[currentElement].Actives[2].AbilityUse();
+        UseAbility(2);
     }
 
+    /// <summary>
+    /// Logic for using an ability
+    /// </summary>
+    /// <param name="index">Index of the ability going from 0 to 2</param>
+    private void UseAbility(int index)
+    {
+        List<ActiveAbility> actives = elements[currentElement].Actives;
+        if (index < actives.Count)
+        {
+            actives[index].AbilityUse();
+            Log.Info($"Pressed ability {index + 1} of element:{elements[currentElement].name}", LogCategory.Elements);
+        }
+    }
+
+    /// <summary>
+    /// Gets the specific existing element
+    /// </summary>
+    /// <typeparam name="T">Class of the element</typeparam>
+    /// <returns>Returns the element</returns>
     public T GetSpecificElement<T>() where T : Element
     {
         foreach (Element item in elements)
