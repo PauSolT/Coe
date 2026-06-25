@@ -26,7 +26,7 @@ public class DamageOverTime : MonoBehaviour
                     health.TakeDamage(damage);
                 }
             },
-            onEnd: () => root.Destroy());
+            onEnd: () => root.SelfDestroy());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

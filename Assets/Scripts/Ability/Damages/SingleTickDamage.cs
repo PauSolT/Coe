@@ -19,7 +19,7 @@ public class SingleTickDamage : MonoBehaviour
             health.TakeDamage(damage);
         }
 
-        TimerManager.Instance.StartTimer(duration, () => root.Destroy());
+        TimerManager.Instance.StartTimer(duration, () => root.SelfDestroy());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -24,7 +24,7 @@ public class DelayedSingleDamage : MonoBehaviour
             {
                 health.TakeDamage(damage);
             }
-            root.Destroy();
+            root.SelfDestroy();
         });
     }
 

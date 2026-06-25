@@ -1,13 +1,17 @@
-﻿public class FireAbility3 : ActiveAbility
+﻿using UnityEngine;
+
+public class FireAbility3 : ActiveAbility
 {
     protected sealed override bool Execute()
     {
         base.Execute();
-        HealthComponent health = owner.GetComponent<HealthComponent>();
+        if (!owner.TryGetComponent(out HealthComponent health))
+        {
+            return false;
+        }
+
         health.Invulnerable = true;
-        
         TimerManager.Instance.StartTimer(data.duration, () => { health.Invulnerable = false; });
         return true;
     }
-
 }

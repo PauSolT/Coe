@@ -34,9 +34,8 @@ public class AbilityData : ScriptableObject
 
     public override string ToString()
     {
-        // :P0 converts a 0-1 float to a Percentage string with 0 decimal places (0.85 -> 85%)
         // :0.## ensures we don't show unnecessary zeros on the cooldown (2.50 -> 2.5)
-        string desc = $"COMMON\n {abilityName} | Power: {power:P0} | CD: {cooldown:0.##}s | Duration: {duration:0.##}s | Prefab: {(prefab != null ? prefab.name : "null")}";
+        string desc = $"COMMON\n {abilityName} | Power: {power:F0} | CD: {cooldown:0.##}s | Duration: {duration:0.##}s | Prefab: {(prefab != null ? prefab.name : "null")}";
         desc += $"\n{description}";
         desc += $"\nDoT\n Frequency: {tickFrequency}";
         return desc;

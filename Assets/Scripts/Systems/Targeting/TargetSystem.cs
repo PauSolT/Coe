@@ -32,6 +32,10 @@ public class TargetSystem : MonoBehaviour
 
     private void Update()
     {
+        if (mainCamera == null)
+        {
+            return;
+        }
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
         Vector2 mouseWorldPos = mainCamera.ScreenToWorldPoint(mouseScreenPos);
         RaycastHit2D hit = Physics2D.Raycast(mouseWorldPos, Vector2.zero, 0f, targetLayer);

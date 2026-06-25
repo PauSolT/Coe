@@ -37,11 +37,6 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
     }
 
 
-    public void OnAttack(InputAction.CallbackContext context)
-    {
-        //throw new NotImplementedException();
-    }
-
     public void OnCrouch(InputAction.CallbackContext context)
     {
         //throw new NotImplementedException();

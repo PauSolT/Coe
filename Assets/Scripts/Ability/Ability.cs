@@ -9,15 +9,15 @@ public class Ability
     /// </summary>
     public virtual void Init(GameObject owner)
     {
-
+        
     }
 
     /// <summary>
     /// Uninitialize ability when swapping out the element.
     /// </summary>
-    public virtual void Uninit()
+    public virtual void Uninit(GameObject owner)
     {
-
+       
     }
 
     public void SetData(AbilityData data)

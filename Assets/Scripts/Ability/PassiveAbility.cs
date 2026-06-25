@@ -7,8 +7,8 @@ public class PassiveAbility : Ability
         base.Init(owner);
     }
 
-    public override void Uninit()
+    public override void Uninit(GameObject owner)
     {
-        base.Uninit();
+        base.Uninit(owner);
     }
 }

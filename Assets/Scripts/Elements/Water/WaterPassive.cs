@@ -9,16 +9,30 @@ public class WaterPassive : PassiveAbility
     public sealed override void Init(GameObject owner)
     {
         base.Init(owner);
-        
-        owner.TryGetComponent(out Player player);
-        element = player.GetSpecificElement<WaterElement>();
 
-        foreach (WaterAbility ability in element.Actives.Cast<WaterAbility>())
+        if (owner.TryGetComponent(out Player player))
         {
-            ability.IsEmpowered = IsEmpowered;
-            ability.OnAfterLaunch += HasEmpowered;
+            WaterElement element = player.GetSpecificElement<WaterElement>();
+            foreach (WaterAbility ability in element.Actives.OfType<WaterAbility>())
+            {
+                ability.IsEmpowered = IsEmpowered;
+                ability.OnAfterLaunch -= HasEmpowered;
+            }
         }
 
+    }
+
+    public sealed override void Uninit(GameObject owner)
+    {
+        if (owner.TryGetComponent(out Player player))
+        {
+            WaterElement element = player.GetSpecificElement<WaterElement>();
+            foreach (WaterAbility ability in element.Actives.OfType<WaterAbility>())
+            {
+                ability.OnAfterLaunch -= HasEmpowered;
+            }
+        }
+        base.Uninit(owner);
     }
 
     private void HasEmpowered()

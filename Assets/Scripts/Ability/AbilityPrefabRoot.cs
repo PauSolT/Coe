@@ -8,7 +8,7 @@ public class AbilityPrefabRoot : MonoBehaviour
     /// <summary>
     /// Destroys the root of the ability
     /// </summary>
-    public void Destroy()
+    public void SelfDestroy()
     {
         Destroy(gameObject);
     }

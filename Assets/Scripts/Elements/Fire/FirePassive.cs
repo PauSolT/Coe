@@ -18,6 +18,19 @@ public class FirePassive : PassiveAbility
 
     }
 
+    public sealed override void Uninit(GameObject owner)
+    {
+        if (owner.TryGetComponent(out Player player))
+        {
+            FireElement element = player.GetSpecificElement<FireElement>();
+            foreach (ActiveAbility ability in element.Actives)
+            {
+                ability.OnAfterLaunch -= HealOnAbilityCast;
+            }
+        }
+        base.Uninit(owner);
+    }
+
     public void HealOnAbilityCast()
     {
         healthComponent.Heal(healthComponent.MaxHealth * data.power);
