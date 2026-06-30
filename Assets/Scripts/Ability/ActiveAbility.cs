@@ -61,6 +61,10 @@ public class ActiveAbility : Ability
         cooldownTimer = TimerManager.Instance.StartTimer(data.cooldown, () => onCooldown = false);
     }
 
+    /// <summary>
+    /// Checks if the ability has a valid target
+    /// </summary>
+    /// <returns>Returns a bool</returns>
     protected bool HasTarget()
     {
         ITargetable targetable = TargetSystem.Instance.CurrentTarget;
@@ -72,6 +76,10 @@ public class ActiveAbility : Ability
         return targetable != null;
     }
 
+    /// <summary>
+    /// Gets the current target
+    /// </summary>
+    /// <returns>Returns the gameObject of the target</returns>
     protected GameObject GetCurrentTarget()
     {
         return TargetSystem.Instance.CurrentTarget.GetGameObject();

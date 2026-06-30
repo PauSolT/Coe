@@ -25,10 +25,11 @@ public class WaterAbility1 : WaterAbility
             data.prefab,
             owner.transform.position,
             owner.transform.localRotation);
-        //SingleDamageToTarget damage = instance.GetComponentInChildren<SingleDamageToTarget>();
-        //damage.Init(owner,
-        //    finalPower,
-        //    finalDuration);
+        ProjectileDamage damage = instance.GetComponentInChildren<ProjectileDamage>();
+        damage.Init(owner,
+            GetCurrentTarget(),
+            finalPower,
+            finalDuration);
 
         return true;
     }
