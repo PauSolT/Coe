@@ -9,13 +9,13 @@ public abstract class Element : MonoBehaviour
     public List<ActiveAbility> Actives { get; private set; } = new();
 
     public Action<GameObject> OnElementEquip;
-    public Action OnElementUnequip;
+    public Action<GameObject> OnElementUnequip;
 
     public virtual void Init()
     {
         Log.Info($"{name} Init", LogCategory.Elements ,this);
         InitAbilityData();
-        PopulateEvents();
+        //PopulateEvents();
     }
 
     public Color GetColor()
@@ -23,38 +23,38 @@ public abstract class Element : MonoBehaviour
         return data.color;
     }
 
-    private void OnDisable()
-    {
-        EraseEvents();
-    }
+    //private void OnDisable()
+    //{
+    //    EraseEvents();
+    //}
 
     /// <summary>
     /// Prepares OnElementEquip and OnElementUnequip actions / events
     /// </summary>
-    private void PopulateEvents()
-    {
-        OnElementEquip += Passive.Init;
-        OnElementUnequip += Passive.Uninit;
-        foreach (ActiveAbility aa in Actives)
-        {
-            OnElementEquip += aa.Init;
-            OnElementUnequip += aa.Uninit;
-        }
-    }
+    //private void PopulateEvents()
+    //{
+    //    OnElementEquip += Passive.Init;
+    //    OnElementUnequip += Passive.Uninit;
+    //    foreach (ActiveAbility aa in Actives)
+    //    {
+    //        OnElementEquip += aa.Init;
+    //        OnElementUnequip += aa.Uninit;
+    //    }
+    //}
 
     /// <summary>
     /// Deletes OnElementEquip and OnElementUnequip actions / events
     /// </summary>
-    private void EraseEvents()
-    {
-        OnElementEquip -= Passive.Init;
-        OnElementUnequip -= Passive.Uninit;
-        foreach (ActiveAbility aa in Actives)
-        {
-            OnElementEquip -= aa.Init;
-            OnElementUnequip -= aa.Uninit;
-        }
-    }
+    //private void EraseEvents()
+    //{
+    //    OnElementEquip -= Passive.Init;
+    //    OnElementUnequip -= Passive.Uninit;
+    //    foreach (ActiveAbility aa in Actives)
+    //    {
+    //        OnElementEquip -= aa.Init;
+    //        OnElementUnequip -= aa.Uninit;
+    //    }
+    //}
    
 
     /// <summary>

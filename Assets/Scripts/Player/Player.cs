@@ -13,19 +13,34 @@ public class Player : MonoBehaviour
         foreach (Element element in elements)
         {
             element.Init();
+            element.Passive.Init(gameObject);
+            foreach (ActiveAbility aa in element.Actives)
+            {
+                aa.Init(gameObject);
+            }
         }
         elements[currentElement].OnElementEquip?.Invoke(gameObject);
+
+
     }
 
-    void Update()
+    private void OnDestroy()
     {
-        
-    }   
+        foreach (Element element in elements)
+        {
+            element.Init();
+            element.Passive.Init(gameObject);
+            foreach (ActiveAbility aa in element.Actives)
+            {
+                aa.Init(gameObject);
+            }
+        }
+    }
 
     public void PreviousElement()
     {
 
-        elements[currentElement].OnElementUnequip?.Invoke();
+        elements[currentElement].OnElementUnequip?.Invoke(gameObject);
         currentElement--;
         if (currentElement < 0)
         {
@@ -38,7 +53,7 @@ public class Player : MonoBehaviour
 
     public void NextElement()
     {
-        elements[currentElement].OnElementUnequip?.Invoke();
+        elements[currentElement].OnElementUnequip?.Invoke(gameObject);
         currentElement++;
         if (currentElement >= elements.Count)
         {

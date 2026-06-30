@@ -12,11 +12,11 @@ public class WaterPassive : PassiveAbility
 
         if (owner.TryGetComponent(out Player player))
         {
-            WaterElement element = player.GetSpecificElement<WaterElement>();
+            element = player.GetSpecificElement<WaterElement>();
             foreach (WaterAbility ability in element.Actives.OfType<WaterAbility>())
             {
                 ability.IsEmpowered = IsEmpowered;
-                ability.OnAfterLaunch -= HasEmpowered;
+                ability.OnAfterLaunch += HasEmpowered;
             }
         }
 
@@ -26,7 +26,6 @@ public class WaterPassive : PassiveAbility
     {
         if (owner.TryGetComponent(out Player player))
         {
-            WaterElement element = player.GetSpecificElement<WaterElement>();
             foreach (WaterAbility ability in element.Actives.OfType<WaterAbility>())
             {
                 ability.OnAfterLaunch -= HasEmpowered;

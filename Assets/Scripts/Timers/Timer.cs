@@ -28,7 +28,9 @@ public class Timer
 
         //If this is a tick timer, calculate next tick time
         if (TickFrequency > 0)
+        {
             nextTickTime = totalTime - tickFrequency;
+        }
     }
 
     /// <summary>
@@ -55,6 +57,11 @@ public class Timer
     public void ResumeTimer() { IsPaused = false; }
 
     public void Cancel() { IsCancelled = true; }
+
+    public void ResetTimter()
+    {
+        CurrentTime = TotalTime;
+    }
 
     /// <summary>
     /// Returns the progress of the timer from 1 to 0
