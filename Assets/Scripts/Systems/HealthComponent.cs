@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ElementalReceiver))]
 public class HealthComponent : MonoBehaviour, ITargetable
 {
     [field: SerializeField] public float MaxHealth { get; private set; } = 100f;
@@ -15,7 +16,7 @@ public class HealthComponent : MonoBehaviour, ITargetable
     public event Action OnDeath;
     public event Action OnHit;
 
-    [field: SerializeField] private List<ShieldComponent> activeShields = new List<ShieldComponent>();
+    [SerializeField] private List<ShieldComponent> activeShields = new List<ShieldComponent>();
 
     private void Start()
     {

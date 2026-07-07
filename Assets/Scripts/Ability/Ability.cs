@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Ability
 {
-    [field: SerializeField] protected AbilityData data;
+    [SerializeField] protected AbilityData data;
 
     /// <summary>
     /// Initialize ability when swapping in the element.

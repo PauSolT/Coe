@@ -15,6 +15,7 @@ public enum LogCategory
     Health = 1 << 3,
     Elements = 1 << 4,
     Input = 1 << 5,
+    Reactions = 1 << 6,
     All = ~0
 }
 

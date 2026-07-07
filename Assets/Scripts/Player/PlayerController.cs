@@ -3,9 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour
 {
-    [field: SerializeField] InputReader inputReader;
-    [field: SerializeField] int horizontalRaycount = 4;
-    [field: SerializeField] float moveSpeed = 6f;
+    [SerializeField] InputReader inputReader;
+    [SerializeField] int horizontalRaycount = 4;
+    [SerializeField] float moveSpeed = 6f;
     float direction = 0f;
 
     bool facingRight = true;
@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     Player player;
 
     Rigidbody2D rigidbody2d;
-    [field: SerializeField] LayerMask groundLayer;
+    [SerializeField] LayerMask groundLayer;
 
     void Awake()
     {
