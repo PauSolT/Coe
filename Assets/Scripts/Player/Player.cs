@@ -28,11 +28,10 @@ public class Player : MonoBehaviour
     {
         foreach (Element element in elements)
         {
-            element.Init();
-            element.Passive.Init(gameObject);
+            element.Passive.Uninit(gameObject);
             foreach (ActiveAbility aa in element.Actives)
             {
-                aa.Init(gameObject);
+                aa.Uninit(gameObject);
             }
         }
     }

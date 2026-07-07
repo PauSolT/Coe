@@ -6,7 +6,7 @@ public class DamageOverTime : MonoBehaviour
     List<HealthComponent> targetsToDamage = new List<HealthComponent>();
     GameObject owner;
 
-    public void Init(GameObject owner, float damage, float damageFrequency, float damageDuration = 0f, float duration = 0.1f, bool onTarget = false)
+    public void Init(GameObject owner, float damage, float damageFrequency, float duration = 0.1f, bool onTarget = false)
     {
         this.owner = owner;
         AbilityPrefabRoot root = GetComponentInParent<AbilityPrefabRoot>();

@@ -56,9 +56,12 @@ public class Timer
     public void PauseTimer() { IsPaused = true; }
     public void ResumeTimer() { IsPaused = false; }
 
+    /// <summary>
+    /// Cancels the timer
+    /// </summary>
     public void Cancel() { IsCancelled = true; }
 
-    public void ResetTimter()
+    public void ResetTimer()
     {
         CurrentTime = TotalTime;
     }
