@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageOverTime : MonoBehaviour
+public class DamageOverTime : BaseDamage
 {
     List<HealthComponent> targetsToDamage = new List<HealthComponent>();
-    GameObject owner;
 
-    public void Init(GameObject owner, float damage, float damageFrequency, float duration = 0.1f, bool onTarget = false)
+    public void Init(GameObject owner, ElementData element, float damage, float damageFrequency, float duration = 0.1f, bool onTarget = false)
     {
-        this.owner = owner;
-        AbilityPrefabRoot root = GetComponentInParent<AbilityPrefabRoot>();
+        BaseInit(owner, damage, element, duration);
 
         if (onTarget)
         {
@@ -23,33 +21,30 @@ public class DamageOverTime : MonoBehaviour
             {
                 foreach (HealthComponent health in targetsToDamage)
                 {
-                    health.TakeDamage(damage);
+                    health.TakeDamage(damageComponent);
                 }
             },
-            onEnd: () => root.SelfDestroy());
+            onEnd: SelfDestroy);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject != owner)
+        if (IsOwner(collision))
         {
-            collision.TryGetComponent(out HealthComponent health);
-            if (health != null && !targetsToDamage.Contains(health))
-            {
-                targetsToDamage.Add(health);
-            }
+            return;
+        }
+
+        if (collision.TryGetComponent(out HealthComponent health) && !targetsToDamage.Contains(health))
+        {
+            targetsToDamage.Add(health);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject != owner)
+        if (collision.TryGetComponent(out HealthComponent health))
         {
-            collision.TryGetComponent(out HealthComponent health);
-            if (health != null && targetsToDamage.Contains(health))
-            {
-                targetsToDamage.Remove(health);
-            }
+            targetsToDamage.Remove(health);
         }
     }
 

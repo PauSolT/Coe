@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Don't start timers by creating new timers. Start them byu clling the TimerManager
+/// </summary>
 [Serializable]
 public class Timer 
 {

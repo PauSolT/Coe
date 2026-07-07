@@ -20,6 +20,10 @@ public class ElementalReceiver : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles the applying of elements to the targets
+    /// </summary>
+    /// <param name="incomingElement">Element to apply the effect</param>
     public void ApplyElement(ElementData incomingElement)
     {
         // Check if incoming element reacts with any currently active elements
@@ -64,7 +68,7 @@ public class ElementalReceiver : MonoBehaviour
 
     private Timer DecayElement(ElementData element)
     {
-        return new Timer(element.effectDuration, () =>
+        return TimerManager.Instance.StartTimer(element.effectDuration, () =>
         {
             activeElements.RemoveAll(e => e.element == element);
             Log.Info($"{element.elementName} faded from {gameObject.name}", LogCategory.Reactions);
