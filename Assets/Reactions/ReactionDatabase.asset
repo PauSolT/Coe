@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d21a6d1a1571c5418eabd3a76d3d83b, type: 3}
   m_Name: ReactionDatabase
   m_EditorClassIdentifier: Assembly-CSharp::ReactionDatabase
-  reactions: []
+  reactions:
+  - {fileID: 11400000, guid: 2d7b94156785fd64c8d0a77eb61959c4, type: 2}

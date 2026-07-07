@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ef3b9b3bb2ba164eb5e199e78a8b7a4, type: 3}
   m_Name: FireWater
   m_EditorClassIdentifier: Assembly-CSharp::ElementalReaction
-  elementA: {fileID: 0}
-  elementB: {fileID: 0}
-  reactionName: 
+  elementA: {fileID: 11400000, guid: becd0f88f2986a64eb66e093e0cb73b4, type: 2}
+  elementB: {fileID: 11400000, guid: e15e32db7e2e8f9489228e6327f4c1d5, type: 2}
+  reactionName: FireWater
   reactionVfxPrefab: {fileID: 0}
   damageMultiplier: 2

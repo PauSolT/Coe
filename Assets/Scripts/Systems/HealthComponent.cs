@@ -36,6 +36,13 @@ public class HealthComponent : MonoBehaviour, ITargetable
     /// <returns>Returns the damage dealt to health.</returns>
     public void TakeDamage(DamageComponent damage)
     {
+        if (damage.ElementData != null)
+        {
+            ElementalReceiver receiver = GetComponent<ElementalReceiver>();
+            float reactionBonus = receiver.ApplyElement(damage.ElementData);
+            damage.SetMultiplier(reactionBonus);
+        }
+
         Log.Info($"{gameObject.name} Taking {damage.GetTotalAmount()} damage ()", LogCategory.Health, this);
         DecreaseHealth(damage);
     }

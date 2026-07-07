@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +7,9 @@ public class ElementalReceiver : MonoBehaviour
     [SerializeField] private ReactionDatabase reactionDatabase;
 
     // Tracks the elements currently active on this entity
-    private List<ActiveElement> activeElements = new List<ActiveElement>();
+    [SerializeField] private List<ActiveElement> activeElements = new List<ActiveElement>();
 
+    [Serializable]
     private class ActiveElement
     {
         public ElementData element;
@@ -20,11 +22,16 @@ public class ElementalReceiver : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        reactionDatabase = ReactionManager.Instance.Database;
+    }
+
     /// <summary>
     /// Handles the applying of elements to the targets
     /// </summary>
     /// <param name="incomingElement">Element to apply the effect</param>
-    public void ApplyElement(ElementData incomingElement)
+    public float ApplyElement(ElementData incomingElement)
     {
         // Check if incoming element reacts with any currently active elements
         for (int i = activeElements.Count - 1; i >= 0; i--)
@@ -46,7 +53,7 @@ public class ElementalReceiver : MonoBehaviour
                 activeElements[i].effectTimer.Cancel();
                 activeElements.RemoveAt(i);
 
-                return;
+                return reaction.damageMultiplier;
             }
         }
 
@@ -64,6 +71,8 @@ public class ElementalReceiver : MonoBehaviour
             activeElements.Add(new ActiveElement(incomingElement, decay));
             Log.Info($"{incomingElement.elementName} applied to {gameObject.name}", LogCategory.Reactions);
         }
+
+        return 1f;
     }
 
     private Timer DecayElement(ElementData element)

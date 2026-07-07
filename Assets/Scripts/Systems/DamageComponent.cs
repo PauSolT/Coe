@@ -19,6 +19,11 @@ public class DamageComponent
         multiplier += mult;
     }
 
+    public void SetMultiplier(float mult)
+    {
+        multiplier = mult;
+    }
+
     public void ResetMultiplier()
     {
         multiplier = 1;
