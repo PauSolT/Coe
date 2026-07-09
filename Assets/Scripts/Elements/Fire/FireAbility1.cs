@@ -12,6 +12,7 @@ public class FireAbility1 : ActiveAbility
             owner.transform.localRotation);
         SingleTickDamage damage = instance.GetComponentInChildren<SingleTickDamage>();
         damage.Init(owner,
+            element,
             data.power,
             data.duration);
 

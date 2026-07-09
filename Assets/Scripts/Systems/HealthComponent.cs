@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ElementalReceiver))]
 public class HealthComponent : MonoBehaviour, ITargetable
 {
     [field: SerializeField] public float MaxHealth { get; private set; } = 100f;
@@ -15,7 +16,7 @@ public class HealthComponent : MonoBehaviour, ITargetable
     public event Action OnDeath;
     public event Action OnHit;
 
-    [field: SerializeField] private List<ShieldComponent> activeShields = new List<ShieldComponent>();
+    [SerializeField] private List<ShieldComponent> activeShields = new List<ShieldComponent>();
 
     private void Start()
     {
@@ -33,9 +34,16 @@ public class HealthComponent : MonoBehaviour, ITargetable
     /// </summary>
     /// <param name="damage">Amount of damage the user takes.</param>
     /// <returns>Returns the damage dealt to health.</returns>
-    public void TakeDamage(float damage)
+    public void TakeDamage(DamageComponent damage)
     {
-        Log.Info($"{gameObject.name} Taking {damage} damage", LogCategory.Health, this);
+        if (damage.ElementData != null)
+        {
+            ElementalReceiver receiver = GetComponent<ElementalReceiver>();
+            float reactionBonus = receiver.ApplyElement(damage.ElementData);
+            damage.SetMultiplier(reactionBonus);
+        }
+
+        Log.Info($"{gameObject.name} Taking {damage.GetTotalAmount()} damage ()", LogCategory.Health, this);
         DecreaseHealth(damage);
     }
 
@@ -101,12 +109,12 @@ public class HealthComponent : MonoBehaviour, ITargetable
     /// </summary>
     /// <param name="damage">Damage to subtract to health.</param>
     /// <returns>Returns the effective damage dealt to health.</returns>
-    public float DecreaseHealth(float damage)
+    public float DecreaseHealth(DamageComponent damage)
     {
         OnHit?.Invoke();
         if (Invulnerable) return -1f;
 
-        float remainingDamage = damage;
+        float remainingDamage = damage.GetTotalAmount();
 
 
         // Iterate backwards because we are removing items from the list

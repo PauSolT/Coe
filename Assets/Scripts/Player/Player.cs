@@ -13,10 +13,10 @@ public class Player : MonoBehaviour
         foreach (Element element in elements)
         {
             element.Init();
-            element.Passive.Init(gameObject);
+            element.Passive.Init(gameObject, element.Data);
             foreach (ActiveAbility aa in element.Actives)
             {
-                aa.Init(gameObject);
+                aa.Init(gameObject, element.Data);
             }
         }
         elements[currentElement].OnElementEquip?.Invoke(gameObject);

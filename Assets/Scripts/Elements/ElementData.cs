@@ -8,5 +8,6 @@ public class ElementData : ScriptableObject
     public string elementName;
     public string description;
     public List<AbilityData> abilityData;
+    public float effectDuration;
 
 }

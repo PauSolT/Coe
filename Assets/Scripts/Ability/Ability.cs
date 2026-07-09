@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class Ability
 {
-    [field: SerializeField] protected AbilityData data;
+    [SerializeField] protected AbilityData data;
+    protected ElementData elementData;
 
     /// <summary>
     /// Initialize ability when swapping in the element.
     /// </summary>
-    public virtual void Init(GameObject owner)
+    public virtual void Init(GameObject owner, ElementData elementData)
     {
-        
+        this.elementData = elementData;
     }
 
     /// <summary>

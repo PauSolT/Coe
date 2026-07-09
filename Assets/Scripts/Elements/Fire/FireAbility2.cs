@@ -20,6 +20,7 @@ public class FireAbility2 : ActiveAbility
             target.transform);
         DamageOverTime damage = instance.GetComponentInChildren<DamageOverTime>();
         damage.Init(owner,
+            element,
             data.power,
             data.tickFrequency,
             duration: data.duration,

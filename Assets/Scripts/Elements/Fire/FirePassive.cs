@@ -3,9 +3,9 @@ using UnityEngine;
 public class FirePassive : PassiveAbility
 {
     HealthComponent healthComponent;
-    public sealed override void Init(GameObject owner)
+    public sealed override void Init(GameObject owner, ElementData elementData)
     {
-        base.Init(owner);
+        base.Init(owner, elementData);
         
         owner.TryGetComponent(out healthComponent);
         owner.TryGetComponent(out Player player);

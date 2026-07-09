@@ -27,6 +27,7 @@ public class WaterAbility1 : WaterAbility
             owner.transform.localRotation);
         ProjectileDamage damage = instance.GetComponentInChildren<ProjectileDamage>();
         damage.Init(owner,
+            element,
             GetCurrentTarget(),
             finalPower,
             finalDuration);

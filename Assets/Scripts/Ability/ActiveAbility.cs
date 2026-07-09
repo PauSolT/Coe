@@ -7,15 +7,17 @@ public class ActiveAbility : Ability
     public Action OnAfterLaunch;
 
     protected GameObject owner;
+    protected ElementData element;
 
     protected bool onCooldown = false;
     Timer cooldownTimer = null;
 
 
-    public override void Init(GameObject owner)
+    public override void Init(GameObject owner, ElementData element)
     {
-        base.Init(owner);
+        base.Init(owner, element);
         this.owner = owner;
+        this.element = element;
         OnAfterLaunch += StartCooldown;
     }
 

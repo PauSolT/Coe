@@ -1,55 +1,45 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public class DelayedSingleDamage : MonoBehaviour
+public class DelayedSingleDamage : BaseDamage
 {
     List<HealthComponent> targetsToDamage = new List<HealthComponent>();
-    GameObject owner;
 
-    public void Init(GameObject owner, float damage, float duration = 0.1f, bool onTarget = false)
+    public void Init(GameObject owner, ElementData element, float damage, float duration = 0.1f, bool onTarget = false)
     {
-        this.owner = owner;
-        AbilityPrefabRoot root = GetComponentInParent<AbilityPrefabRoot>();
+        BaseInit(owner, damage, element, duration);
 
-        if (onTarget)
+        if (onTarget && GetComponentInParent<HealthComponent>() is HealthComponent health)
         {
-            HealthComponent health = GetComponentInParent<HealthComponent>();
-            health.TakeDamage(damage);
+            health.TakeDamage(damageComponent);
         }
 
         TimerManager.Instance.StartTimer(duration, () =>
         {
             foreach (HealthComponent health in targetsToDamage)
-            {
-                health.TakeDamage(damage);
-            }
-            root.SelfDestroy();
+                health.TakeDamage(damageComponent);
+            SelfDestroy();
         });
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject != owner)
+        if (IsOwner(collision))
         {
-            collision.TryGetComponent(out HealthComponent health);
-            if (health != null && !targetsToDamage.Contains(health))
-            {
-                targetsToDamage.Add(health);
-            }
+            return;
+        }
+
+        if (collision.TryGetComponent(out HealthComponent health) && !targetsToDamage.Contains(health))
+        {
+            targetsToDamage.Add(health);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject != owner)
+        if (collision.TryGetComponent(out HealthComponent health))
         {
-            collision.TryGetComponent(out HealthComponent health);
-            if (health != null && targetsToDamage.Contains(health))
-            {
-                targetsToDamage.Remove(health);
-            }
+            targetsToDamage.Remove(health);
         }
     }
-
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Element : MonoBehaviour
 {
     [field: SerializeField] ElementData data;
+    public ElementData Data => data;
     public PassiveAbility Passive { get; private set; } = new();
     public List<ActiveAbility> Actives { get; private set; } = new();
 

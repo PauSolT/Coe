@@ -28,7 +28,7 @@ public class WaterAbility2 : WaterAbility
             health.AddShield("WaterAbility2", finalPower, finalDuration, () =>
             {
                 DelayedSingleDamage damage = instance.GetComponentInChildren<DelayedSingleDamage>();
-                damage.Init(owner, finalSecondaryPower, 0.05f);
+                damage.Init(owner, element, finalSecondaryPower, 0.05f);
             });
         }
 

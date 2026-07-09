@@ -24,6 +24,7 @@ public class WaterAbility3 : WaterAbility
             owner.transform);
         DamageOverTime damage = instance.GetComponentInChildren<DamageOverTime>();
         damage.Init(owner,
+            element,
             finalPower,
             data.tickFrequency,
             duration: finalDuration);

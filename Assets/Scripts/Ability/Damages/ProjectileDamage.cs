@@ -1,31 +1,18 @@
 using UnityEngine;
 
-public class ProjectileDamage : MonoBehaviour
+public class ProjectileDamage : BaseDamage
 {
     [SerializeField] private float speed = 10f;
+    Timer timer;
 
-    private GameObject owner;
-    private float damage;
-
-    Timer timer;  
-
-    public void Init(GameObject owner, GameObject target, float damage, float maxDuration)
+    public void Init(GameObject owner, ElementData element, GameObject target, float damage, float duration)
     {
-        this.owner = owner;
-        this.damage = damage;
+        BaseInit(owner, damage, element, duration);
 
-        AbilityPrefabRoot root = GetComponentInParent<AbilityPrefabRoot>();
-
-        timer = TimerManager.Instance.StartTimer(maxDuration,
-            onEnd: () =>
-            {
-                root.SelfDestroy();
-            },
+        timer = TimerManager.Instance.StartTimer(duration,
+            onEnd: SelfDestroy,
             update: (deltaTime) =>
             {
-                if (target == null)
-                    return;
-
                 Vector3 direction = (target.transform.position - transform.position).normalized;
                 transform.position += deltaTime * speed * direction;
             }
@@ -34,12 +21,15 @@ public class ProjectileDamage : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject == owner) return;
+        if (IsOwner(collision))
+        {
+            return;
+        }
 
         if (collision.TryGetComponent(out HealthComponent health))
         {
-            health.TakeDamage(damage);
-            GetComponentInParent<AbilityPrefabRoot>().SelfDestroy();
+            health.TakeDamage(damageComponent);
+            SelfDestroy();
             timer?.Cancel();
         }
     }

@@ -1,37 +1,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingleTickDamage : MonoBehaviour
+public class SingleTickDamage : BaseDamage
 {
     List<Collider2D> alreadyDamaged = new List<Collider2D>();
-    GameObject owner;
-    float damage;
 
-    public void Init(GameObject owner, float damage, float duration = 0.1f, bool onTarget = false)
+    public void Init(GameObject owner, ElementData element, float damage, float duration = 0.1f, bool onTarget = false)
     {
-        this.owner = owner;
-        this.damage = damage;
-        AbilityPrefabRoot root = GetComponentInParent<AbilityPrefabRoot>();
+        BaseInit(owner, damage, element, duration);
 
         if (onTarget)
         {
             HealthComponent health = GetComponentInParent<HealthComponent>();
-            health.TakeDamage(damage);
+            health.TakeDamage(damageComponent);
         }
 
-        TimerManager.Instance.StartTimer(duration, () => root.SelfDestroy());
+        TimerManager.Instance.StartTimer(duration, SelfDestroy);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!alreadyDamaged.Contains(collision) && collision.gameObject != owner)
+        if (IsOwner(collision) || alreadyDamaged.Contains(collision))
         {
-            alreadyDamaged.Add(collision);
-            collision.TryGetComponent(out HealthComponent health);
-            if (health != null)
-            {
-                health.TakeDamage(damage);
-            }
+            return;
+        }
+
+        alreadyDamaged.Add(collision);
+        if (collision.TryGetComponent(out HealthComponent health))
+        {
+            health.TakeDamage(damageComponent);
         }
     }
 

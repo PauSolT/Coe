@@ -6,9 +6,9 @@ public class WaterPassive : PassiveAbility
 
     public bool IsEmpowered { get; private set; } = true;
     WaterElement element;
-    public sealed override void Init(GameObject owner)
+    public sealed override void Init(GameObject owner, ElementData elementData)
     {
-        base.Init(owner);
+        base.Init(owner, elementData);
 
         if (owner.TryGetComponent(out Player player))
         {
