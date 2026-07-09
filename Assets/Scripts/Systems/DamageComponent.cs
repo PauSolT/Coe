@@ -1,5 +1,8 @@
 using System;
 
+/// <summary>
+/// Info about the damage
+/// </summary>
 [Serializable]
 public class DamageComponent
 {

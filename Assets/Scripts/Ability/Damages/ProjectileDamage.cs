@@ -3,7 +3,6 @@ using UnityEngine;
 public class ProjectileDamage : BaseDamage
 {
     [SerializeField] private float speed = 10f;
-
     Timer timer;
 
     public void Init(GameObject owner, ElementData element, GameObject target, float damage, float duration)

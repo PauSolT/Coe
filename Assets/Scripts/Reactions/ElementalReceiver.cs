@@ -75,6 +75,11 @@ public class ElementalReceiver : MonoBehaviour
         return 1f;
     }
 
+    /// <summary>
+    /// Timer to remove elemental debuff
+    /// </summary>
+    /// <param name="element">Element of the debuff</param>
+    /// <returns>Timer of the debuff</returns>
     private Timer DecayElement(ElementData element)
     {
         return TimerManager.Instance.StartTimer(element.effectDuration, () =>
