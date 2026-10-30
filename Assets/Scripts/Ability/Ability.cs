@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ability
 {
     [SerializeField] protected AbilityData data;
     protected ElementData elementData;
-
+    protected Image abilityImage;
     /// <summary>
     /// Initialize ability when swapping in the element.
     /// </summary>
@@ -28,5 +29,20 @@ public class Ability
     public AbilityData GetData()
     {
         return data;
+    }
+
+    public void SetImage(Image image)
+    {
+        abilityImage = image;
+    }
+
+    public Image GetImage()
+    {
+        return abilityImage;
+    }
+
+    public void UpdateCooldown(float percentage)
+    {
+        abilityImage.fillAmount = percentage;
     }
 }

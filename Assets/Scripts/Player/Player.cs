@@ -6,18 +6,31 @@ public class Player : MonoBehaviour
     public List<Element> elements;
     SpriteRenderer spriteRenderer;
     int currentElement = 0;
+    PlayerUI playerUI;
+
     void Start()
     {
+        //Get Components
         spriteRenderer = GetComponent<SpriteRenderer>();
+        playerUI = GetComponent<PlayerUI>();
         elements = new List<Element>(GetComponentsInChildren<Element>());
+
+
+        //Init Components
+        playerUI.Init();
         foreach (Element element in elements)
         {
             element.Init();
             element.Passive.Init(gameObject, element.Data);
-            foreach (ActiveAbility aa in element.Actives)
+            element.Passive.SetImage(playerUI.AbilityImages()[0]);
+
+            for (int i = 0; i < element.Actives.Count; i++)
             {
+                ActiveAbility aa = element.Actives[i];
                 aa.Init(gameObject, element.Data);
+                aa.SetImage(playerUI.AbilityImages()[i + 1]);
             }
+
         }
         elements[currentElement].OnElementEquip?.Invoke(gameObject);
 

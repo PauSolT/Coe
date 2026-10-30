@@ -7,7 +7,6 @@ public class ActiveAbility : Ability
     public Action OnAfterLaunch;
 
     protected GameObject owner;
-    protected ElementData element;
 
     protected bool onCooldown = false;
     Timer cooldownTimer = null;
@@ -17,7 +16,6 @@ public class ActiveAbility : Ability
     {
         base.Init(owner, element);
         this.owner = owner;
-        this.element = element;
         OnAfterLaunch += StartCooldown;
     }
 
@@ -60,7 +58,7 @@ public class ActiveAbility : Ability
     protected virtual void StartCooldown()
     {
         onCooldown = true;
-        cooldownTimer = TimerManager.Instance.StartTimer(data.cooldown, () => onCooldown = false);
+        cooldownTimer = TimerManager.Instance.StartTimer(data.cooldown, () => onCooldown = false, deltaTime => UpdateCooldown(GetCooldownPercentage()));
     }
 
     /// <summary>
@@ -86,5 +84,30 @@ public class ActiveAbility : Ability
     {
         return TargetSystem.Instance.CurrentTarget.GetGameObject();
     }
+
+
+    public float GetCooldownPercentage()
+    {
+        if (cooldownTimer == null)
+        {
+            return 1f;
+        } else
+        {
+            return cooldownTimer.ProgressAscending;
+        }
+    }
+
+    public float GetCooldownSecondsRemaining()
+    {
+        if (cooldownTimer == null)
+        {
+            return 0f;
+        }
+        else
+        {
+            return cooldownTimer.CurrentTime;
+        }
+    }
+
 
 }
