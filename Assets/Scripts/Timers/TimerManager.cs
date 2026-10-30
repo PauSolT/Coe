@@ -2,18 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimerManager : MonoBehaviour
+public class TimerManager : BaseSingleton<TimerManager>
 {
-    public static TimerManager Instance { get; private set; }
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        Instance = this;
-
-    }
 
     [field: SerializeField] List<Timer> timers = new();
     [field: SerializeField] public bool Paused { get; private set; } = false;

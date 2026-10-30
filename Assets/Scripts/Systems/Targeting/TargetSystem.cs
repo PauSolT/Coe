@@ -2,18 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TargetSystem : MonoBehaviour
+public class TargetSystem : BaseSingleton<TargetSystem>
 {
-    public static TargetSystem Instance { get; private set; }
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        Instance = this;
-
-    }
 
     public event Action<ITargetable> OnTargetChanged;
 
