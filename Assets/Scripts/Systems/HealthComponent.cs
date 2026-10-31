@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(ElementalReceiver))]
@@ -17,6 +18,8 @@ public class HealthComponent : MonoBehaviour, ITargetable
     public event Action OnHit;
 
     [SerializeField] private List<ShieldComponent> activeShields = new List<ShieldComponent>();
+
+    public GameObject popupPrefab;
 
     private void Start()
     {
@@ -114,7 +117,8 @@ public class HealthComponent : MonoBehaviour, ITargetable
         OnHit?.Invoke();
         if (Invulnerable) return -1f;
 
-        float remainingDamage = damage.GetTotalAmount();
+        float totalDamage = damage.GetTotalAmount();
+        float remainingDamage = totalDamage;
 
 
         // Iterate backwards because we are removing items from the list
@@ -150,6 +154,18 @@ public class HealthComponent : MonoBehaviour, ITargetable
             {
                 Die();
             }
+        }
+
+        if (totalDamage != remainingDamage)
+        {
+            float shieldDamage = totalDamage - remainingDamage;
+            GameObject popupShield = Instantiate(popupPrefab, transform.position, Quaternion.identity);
+            popupShield.GetComponentInChildren<DamageText>().Init(shieldDamage, true, damage.ElementData.color, damage.HitFromRight);
+        }
+        if (remainingDamage > 0)
+        {
+            GameObject popupDamage = Instantiate(popupPrefab, transform.position, Quaternion.identity);
+            popupDamage.GetComponentInChildren<DamageText>().Init(remainingDamage, false, damage.ElementData.color, damage.HitFromRight);
         }
 
         return remainingDamage;

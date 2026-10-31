@@ -151,10 +151,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1497093728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -210.6, y: 88}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0.49221483, y: 0.215}
+  m_AnchorMax: {x: 0.688, y: 0.76500005}
+  m_AnchoredPosition: {x: -0.1000061, y: -1}
+  m_SizeDelta: {x: -1, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &35906539
 MonoBehaviour:
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -178,7 +178,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: -5485848590789801998, guid: c9b97850479808945982333fb8f4ae87, type: 3}
   m_Type: 3
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -270,6 +270,7 @@ MonoBehaviour:
   <Invulnerable>k__BackingField: 0
   <IsTargetable>k__BackingField: 1
   activeShields: []
+  popupPrefab: {fileID: 0}
 --- !u!212 &182033050
 SpriteRenderer:
   serializedVersion: 2
@@ -551,10 +552,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1497093728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -442, y: 68.4}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0.079, y: 0.215}
+  m_AnchorMax: {x: 0.19800001, y: 0.544}
+  m_AnchoredPosition: {x: 0, y: -0.5999985}
+  m_SizeDelta: {x: 38, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &377312725
 MonoBehaviour:
@@ -570,7 +571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -578,7 +579,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: -5485848590789801998, guid: c9b97850479808945982333fb8f4ae87, type: 3}
   m_Type: 3
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1175,10 +1176,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1497093728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -87.1, y: 88}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0.7313224, y: 0.215}
+  m_AnchorMax: {x: 0.92800003, y: 0.76500005}
+  m_AnchoredPosition: {x: 0.3999939, y: -1}
+  m_SizeDelta: {x: -1, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &791765607
 MonoBehaviour:
@@ -1194,7 +1195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1202,7 +1203,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: -5485848590789801998, guid: c9b97850479808945982333fb8f4ae87, type: 3}
   m_Type: 3
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1467,10 +1468,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1497093728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -332.2, y: 88}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0.252, y: 0.19847515}
+  m_AnchorMax: {x: 0.453, y: 0.76500005}
+  m_AnchoredPosition: {x: 0.2999878, y: 0.5}
+  m_SizeDelta: {x: -3, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1030541781
 MonoBehaviour:
@@ -1486,7 +1487,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1494,7 +1495,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: -5485848590789801998, guid: c9b97850479808945982333fb8f4ae87, type: 3}
   m_Type: 3
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1546,8 +1547,8 @@ RectTransform:
   - {fileID: 791765606}
   m_Father: {fileID: 527866264}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.65, y: 0}
-  m_AnchorMax: {x: 1, y: 0.25}
+  m_AnchorMin: {x: 0.75, y: 0}
+  m_AnchorMax: {x: 1, y: 0.2}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1564,8 +1565,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 0.02745098}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1719,7 +1720,10 @@ MonoBehaviour:
   <CurrentHealth>k__BackingField: 10
   <Invulnerable>k__BackingField: 0
   <IsTargetable>k__BackingField: 1
-  activeShields: []
+  activeShields:
+  - <Id>k__BackingField: 23
+    <Amount>k__BackingField: 50
+  popupPrefab: {fileID: 2454326741681312407, guid: 738e54171148c9c41ae0b0dd93451c79, type: 3}
 --- !u!212 &2061874991
 SpriteRenderer:
   serializedVersion: 2

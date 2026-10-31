@@ -17,7 +17,9 @@ public class DelayedSingleDamage : BaseDamage
         TimerManager.Instance.StartTimer(duration, () =>
         {
             foreach (HealthComponent health in targetsToDamage)
+            {
                 health.TakeDamage(damageComponent);
+            }
             SelfDestroy();
         });
     }
@@ -31,6 +33,7 @@ public class DelayedSingleDamage : BaseDamage
 
         if (collision.TryGetComponent(out HealthComponent health) && !targetsToDamage.Contains(health))
         {
+            damageComponent.SetHitFromRight(IsDamageFromRight(collision));
             targetsToDamage.Add(health);
         }
     }

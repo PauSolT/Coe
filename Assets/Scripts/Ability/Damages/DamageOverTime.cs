@@ -21,6 +21,7 @@ public class DamageOverTime : BaseDamage
             {
                 foreach (HealthComponent health in targetsToDamage)
                 {
+                    damageComponent.SetHitFromRight(IsDamageFromRight(GetComponent<Collider2D>()));
                     health.TakeDamage(damageComponent);
                 }
             },

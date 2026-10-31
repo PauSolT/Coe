@@ -33,4 +33,9 @@ public class BaseDamage : MonoBehaviour
         }
     }
 
+    protected bool IsDamageFromRight(Collider2D collision)
+    {
+        return owner.transform.position.x > collision.transform.position.x;
+    }
+
 }
