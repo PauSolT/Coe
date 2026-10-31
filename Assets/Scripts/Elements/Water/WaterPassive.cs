@@ -6,6 +6,7 @@ public class WaterPassive : PassiveAbility
 
     public bool IsEmpowered { get; private set; } = true;
     WaterElement element;
+
     public sealed override void Init(GameObject owner, ElementData elementData)
     {
         base.Init(owner, elementData);
@@ -40,7 +41,7 @@ public class WaterPassive : PassiveAbility
         {
             Log.Info($"Just used an empowered water ability! {data.name}", LogCategory.Elements);
             IsEmpowered = false;
-            TimerManager.Instance.StartTimer(data.cooldown, 
+            cooldownTimer = TimerManager.Instance.StartTimer(data.cooldown, 
                 () => { 
                     IsEmpowered = true;
                     SetAbilitiesEmpowered();

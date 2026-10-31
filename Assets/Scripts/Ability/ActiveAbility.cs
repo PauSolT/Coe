@@ -7,17 +7,11 @@ public class ActiveAbility : Ability
     public Action OnAfterLaunch;
 
     protected GameObject owner;
-    protected ElementData element;
-
-    protected bool onCooldown = false;
-    Timer cooldownTimer = null;
-
 
     public override void Init(GameObject owner, ElementData element)
     {
         base.Init(owner, element);
         this.owner = owner;
-        this.element = element;
         OnAfterLaunch += StartCooldown;
     }
 
@@ -54,14 +48,7 @@ public class ActiveAbility : Ability
         return true;
     }
 
-    /// <summary>
-    /// Puts the ability on cooldown and starts the cooldown timer
-    /// </summary>
-    protected virtual void StartCooldown()
-    {
-        onCooldown = true;
-        cooldownTimer = TimerManager.Instance.StartTimer(data.cooldown, () => onCooldown = false);
-    }
+ 
 
     /// <summary>
     /// Checks if the ability has a valid target

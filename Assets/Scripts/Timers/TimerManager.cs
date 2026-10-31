@@ -8,6 +8,7 @@ public class TimerManager : BaseSingleton<TimerManager>
     [field: SerializeField] List<Timer> timers = new();
     [field: SerializeField] public bool Paused { get; private set; } = false;
 
+    public event Action OnTimerUpdated;
 
     void Update()
     {
@@ -36,6 +37,8 @@ public class TimerManager : BaseSingleton<TimerManager>
                 timers.Remove(timer);
             }
         }
+
+        OnTimerUpdated?.Invoke();
     }
 
     void Pause()
