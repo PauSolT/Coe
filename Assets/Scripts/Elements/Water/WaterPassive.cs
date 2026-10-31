@@ -13,16 +13,11 @@ public class WaterPassive : PassiveAbility
 
         if (owner.TryGetComponent(out Player player))
         {
-            owner.TryGetComponent(out PlayerUI playerUI);
             element = player.GetSpecificElement<WaterElement>();
             foreach (WaterAbility ability in element.Actives.OfType<WaterAbility>())
             {
                 ability.IsEmpowered = IsEmpowered;
                 ability.OnAfterLaunch += HasEmpowered;
-                if (playerUI != null)
-                {
-
-                }
             }
         }
 
@@ -46,7 +41,7 @@ public class WaterPassive : PassiveAbility
         {
             Log.Info($"Just used an empowered water ability! {data.name}", LogCategory.Elements);
             IsEmpowered = false;
-            TimerManager.Instance.StartTimer(data.cooldown, 
+            cooldownTimer = TimerManager.Instance.StartTimer(data.cooldown, 
                 () => { 
                     IsEmpowered = true;
                     SetAbilitiesEmpowered();

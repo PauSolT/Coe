@@ -8,10 +8,6 @@ public class ActiveAbility : Ability
 
     protected GameObject owner;
 
-    protected bool onCooldown = false;
-    Timer cooldownTimer = null;
-
-
     public override void Init(GameObject owner, ElementData element)
     {
         base.Init(owner, element);
@@ -52,14 +48,7 @@ public class ActiveAbility : Ability
         return true;
     }
 
-    /// <summary>
-    /// Puts the ability on cooldown and starts the cooldown timer
-    /// </summary>
-    protected virtual void StartCooldown()
-    {
-        onCooldown = true;
-        cooldownTimer = TimerManager.Instance.StartTimer(data.cooldown, () => onCooldown = false, deltaTime => UpdateCooldown(GetCooldownPercentage()));
-    }
+ 
 
     /// <summary>
     /// Checks if the ability has a valid target
@@ -84,30 +73,5 @@ public class ActiveAbility : Ability
     {
         return TargetSystem.Instance.CurrentTarget.GetGameObject();
     }
-
-
-    public float GetCooldownPercentage()
-    {
-        if (cooldownTimer == null)
-        {
-            return 1f;
-        } else
-        {
-            return cooldownTimer.ProgressAscending;
-        }
-    }
-
-    public float GetCooldownSecondsRemaining()
-    {
-        if (cooldownTimer == null)
-        {
-            return 0f;
-        }
-        else
-        {
-            return cooldownTimer.CurrentTime;
-        }
-    }
-
 
 }

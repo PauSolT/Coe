@@ -8,13 +8,15 @@ public class Player : MonoBehaviour
     int currentElement = 0;
     PlayerUI playerUI;
 
+    TimerManager timerManager;
+
     void Start()
     {
         //Get Components
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerUI = GetComponent<PlayerUI>();
         elements = new List<Element>(GetComponentsInChildren<Element>());
-
+        timerManager = TimerManager.Instance;
 
         //Init Components
         playerUI.Init();
@@ -30,11 +32,14 @@ public class Player : MonoBehaviour
                 aa.Init(gameObject, element.Data);
                 aa.SetImage(playerUI.AbilityImages()[i + 1]);
             }
-
         }
+
+        //Events
         elements[currentElement].OnElementEquip?.Invoke(gameObject);
+        timerManager.OnTimerUpdated += UpdateCurrentCooldowns;
 
 
+        ChangePlayerColor();
     }
 
     private void OnDestroy()
@@ -47,33 +52,50 @@ public class Player : MonoBehaviour
                 aa.Uninit(gameObject);
             }
         }
-    }
 
+        timerManager.OnTimerUpdated -= UpdateCurrentCooldowns;
+    }   
+
+    /// <summary>
+    /// Changes to previous element
+    /// </summary>
     public void PreviousElement()
     {
-
+        int previousElement = currentElement;
         elements[currentElement].OnElementUnequip?.Invoke(gameObject);
         currentElement--;
         if (currentElement < 0)
         {
             currentElement = elements.Count - 1;
         }
-        elements[currentElement].OnElementEquip?.Invoke(gameObject);
-        ChangePlayerColor();
+        ChangeElement();
         Log.Info($"Switched to previous element:{elements[currentElement].name}", LogCategory.Elements);
     }
 
+    /// <summary>
+    /// Changes to next element
+    /// </summary>
     public void NextElement()
     {
+        int previousElement = currentElement;
         elements[currentElement].OnElementUnequip?.Invoke(gameObject);
         currentElement++;
         if (currentElement >= elements.Count)
         {
             currentElement = 0;
         }
+        ChangeElement();
+        Log.Info($"Switched to next element:{elements[currentElement].name}", LogCategory.Elements);
+    }
+
+    /// <summary>
+    /// Common chanign element functions
+    /// </summary>
+    private void ChangeElement()
+    {
         elements[currentElement].OnElementEquip?.Invoke(gameObject);
         ChangePlayerColor();
-        Log.Info($"Switched to next element:{elements[currentElement].name}", LogCategory.Elements);
+        UpdateCurrentCooldowns();
     }
 
     /// <summary>
@@ -131,6 +153,32 @@ public class Player : MonoBehaviour
 
     private void ChangePlayerColor()
     {
-        spriteRenderer.color = elements[currentElement].GetColor();
+        Color color = GetCurrentElement().GetColor();
+        spriteRenderer.color = color;
+        GetCurrentElement().Passive.GetImage().color = color;
+        foreach (ActiveAbility aa in GetCurrentElement().Actives)
+        {
+            aa.GetImage().color = color;
+        }
+    }
+
+    /// <summary>
+    /// Returns the current equipped element by the player
+    /// </summary>
+    /// <returns>Equipped element</returns>
+    private Element GetCurrentElement()
+    { 
+        return elements[currentElement]; 
+    }
+
+    private void UpdateCurrentCooldowns()
+    {
+        PassiveAbility passive = GetCurrentElement().Passive;
+        passive.UpdateCooldown(passive.GetCooldownPercentage());
+
+        foreach (ActiveAbility aa in GetCurrentElement().Actives)
+        {
+            aa.UpdateCooldown(aa.GetCooldownPercentage());
+        }
     }
 }
