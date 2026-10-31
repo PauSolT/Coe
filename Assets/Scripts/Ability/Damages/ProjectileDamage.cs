@@ -28,6 +28,7 @@ public class ProjectileDamage : BaseDamage
 
         if (collision.TryGetComponent(out HealthComponent health))
         {
+            damageComponent.SetHitFromRight(IsDamageFromRight(collision));
             health.TakeDamage(damageComponent);
             SelfDestroy();
             timer?.Cancel();

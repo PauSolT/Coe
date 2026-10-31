@@ -10,6 +10,8 @@ public class DamageComponent
     private float multiplier = 1;
     public ElementData ElementData { get; private set; }
 
+    public bool HitFromRight { get; private set; }
+
     public DamageComponent(float amount, ElementData elementData, float multiplier)
     {
         this.amount = amount;
@@ -35,5 +37,10 @@ public class DamageComponent
     public float GetTotalAmount()
     {
         return amount * multiplier;
+    }
+
+    public void SetHitFromRight(bool hitFromRight)
+    {
+        HitFromRight = hitFromRight;
     }
 }
