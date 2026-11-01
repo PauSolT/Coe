@@ -150,8 +150,8 @@ MonoBehaviour:
   firstLifetime: 0.2
   secondLifetime: 0.3
   finalOpacity: 0.1
-  velocityFirstHalf: {x: 0.25, y: 4}
-  velocitySecondHalf: {x: 0.15, y: 1}
+  velocityFirstHalf: {x: 0.5, y: 3}
+  velocitySecondHalf: {x: 0.3, y: 0.35}
   initialScale: {x: 0.25, y: 0.25}
   maxScale: {x: 0.8, y: 0.8}
   finalScale: {x: 0.5, y: 0.5}

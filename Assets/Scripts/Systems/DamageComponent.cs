@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 /// <summary>
 /// Info about the damage
@@ -11,6 +12,7 @@ public class DamageComponent
     public ElementData ElementData { get; private set; }
 
     public bool HitFromRight { get; private set; }
+    public Collider2D TargetCollider { get; set; }
 
     public DamageComponent(float amount, ElementData elementData, float multiplier)
     {

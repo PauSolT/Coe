@@ -37,6 +37,7 @@ public class DamageOverTime : BaseDamage
 
         if (collision.TryGetComponent(out HealthComponent health) && !targetsToDamage.Contains(health))
         {
+            damageComponent.TargetCollider = collision;
             targetsToDamage.Add(health);
         }
     }

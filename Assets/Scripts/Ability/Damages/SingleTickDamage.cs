@@ -28,7 +28,7 @@ public class SingleTickDamage : BaseDamage
         alreadyDamaged.Add(collision);
         if (collision.TryGetComponent(out HealthComponent health))
         {
-            damageComponent.SetHitFromRight(IsDamageFromRight(collision));
+            CommonTriggerBehaviour(collision);
             health.TakeDamage(damageComponent);
         }
     }

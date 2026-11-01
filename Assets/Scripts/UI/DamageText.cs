@@ -38,10 +38,13 @@ public class DamageText : MonoBehaviour
         if (isShieldDamage)
         {
             text.outlineColor = outlineShieldColor;
+            velocityFirstHalf.x *= -1f;
+            velocitySecondHalf.x *= -1f;
         }
         if (damageComponent.HitFromRight)
         {
             velocityFirstHalf.x *= -1f;
+            velocitySecondHalf.x *= -1f;
         }
         if (damageComponent.GetMultiplier() > 1f)
         {

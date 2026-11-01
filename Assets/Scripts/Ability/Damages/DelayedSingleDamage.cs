@@ -33,7 +33,7 @@ public class DelayedSingleDamage : BaseDamage
 
         if (collision.TryGetComponent(out HealthComponent health) && !targetsToDamage.Contains(health))
         {
-            damageComponent.SetHitFromRight(IsDamageFromRight(collision));
+            CommonTriggerBehaviour(collision);
             targetsToDamage.Add(health);
         }
     }

@@ -120,7 +120,6 @@ public class HealthComponent : MonoBehaviour, ITargetable
         float totalDamage = damage.GetTotalAmount();
         float remainingDamage = totalDamage;
 
-
         // Iterate backwards because we are removing items from the list
         for (int i = activeShields.Count - 1; i >= 0; i--)
         {
@@ -156,17 +155,7 @@ public class HealthComponent : MonoBehaviour, ITargetable
             }
         }
 
-        if (totalDamage != remainingDamage)
-        {
-            float shieldDamage = totalDamage - remainingDamage;
-            GameObject popupShield = Instantiate(popupPrefab, transform.position, Quaternion.identity);
-            popupShield.GetComponentInChildren<DamageText>().Init(shieldDamage, true, damage);
-        }
-        if (remainingDamage > 0)
-        {
-            GameObject popupDamage = Instantiate(popupPrefab, transform.position, Quaternion.identity);
-            popupDamage.GetComponentInChildren<DamageText>().Init(remainingDamage, false, damage);
-        }
+        ManageDamageText(damage, totalDamage, remainingDamage);
 
         return remainingDamage;
     }
@@ -203,5 +192,53 @@ public class HealthComponent : MonoBehaviour, ITargetable
     public GameObject GetGameObject()
     {
         return gameObject;
+    }
+
+    /// <summary>
+    /// Function to manage the text on damage
+    /// </summary>
+    /// <param name="damage">DamageComponent component</param>
+    /// <param name="totalDamage">Total damage dealt</param>
+    /// <param name="remainingDamage">Remaining damage after shields</param>
+    private void ManageDamageText(DamageComponent damage, float totalDamage, float remainingDamage)
+    {
+        Vector3 textSpawnPosition;
+        float halfXCollision = damage.TargetCollider.bounds.size.x / 2f;
+        float halfYCollision = damage.TargetCollider.bounds.size.y / 2f;
+
+        //DamageText popup section
+        textSpawnPosition = new Vector3
+            (transform.position.x + halfXCollision,
+            transform.position.y + halfYCollision,
+            0);
+
+        halfXCollision *= 2f;
+
+        if (damage.HitFromRight)
+        {
+            halfXCollision *= -1f;
+            textSpawnPosition.x += halfXCollision;
+        }
+
+        //DamageText shield section
+        if (totalDamage != remainingDamage)
+        {
+            float shieldDamage = totalDamage - remainingDamage;
+            halfXCollision *= -1f;
+            textSpawnPosition.x += halfXCollision;
+            GameObject popupShield = Instantiate(popupPrefab, textSpawnPosition, Quaternion.identity);
+            Log.Info($"SHIELD {textSpawnPosition}");
+            popupShield.GetComponentInChildren<DamageText>().Init(shieldDamage, true, damage);
+            halfXCollision *= -1f;
+            textSpawnPosition.x += halfXCollision;
+
+        }
+        //DamageText health section
+        if (remainingDamage > 0)
+        {
+            GameObject popupDamage = Instantiate(popupPrefab, textSpawnPosition, Quaternion.identity);
+            Log.Info($"HEALTH {textSpawnPosition}");
+            popupDamage.GetComponentInChildren<DamageText>().Init(remainingDamage, false, damage);
+        }
     }
 }

@@ -38,4 +38,10 @@ public class BaseDamage : MonoBehaviour
         return owner.transform.position.x > collision.transform.position.x;
     }
 
+    protected void CommonTriggerBehaviour(Collider2D collision)
+    {
+        damageComponent.TargetCollider = collision;
+        damageComponent.SetHitFromRight(IsDamageFromRight(collision));
+    }
+
 }
