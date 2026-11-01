@@ -160,12 +160,12 @@ public class HealthComponent : MonoBehaviour, ITargetable
         {
             float shieldDamage = totalDamage - remainingDamage;
             GameObject popupShield = Instantiate(popupPrefab, transform.position, Quaternion.identity);
-            popupShield.GetComponentInChildren<DamageText>().Init(shieldDamage, true, damage.ElementData.color, damage.HitFromRight);
+            popupShield.GetComponentInChildren<DamageText>().Init(shieldDamage, true, damage);
         }
         if (remainingDamage > 0)
         {
             GameObject popupDamage = Instantiate(popupPrefab, transform.position, Quaternion.identity);
-            popupDamage.GetComponentInChildren<DamageText>().Init(remainingDamage, false, damage.ElementData.color, damage.HitFromRight);
+            popupDamage.GetComponentInChildren<DamageText>().Init(remainingDamage, false, damage);
         }
 
         return remainingDamage;

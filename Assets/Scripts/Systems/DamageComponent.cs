@@ -34,6 +34,12 @@ public class DamageComponent
         multiplier = 1;
     }
 
+    public float GetMultiplier()
+    {
+        return multiplier;
+    }
+
+
     public float GetTotalAmount()
     {
         return amount * multiplier;

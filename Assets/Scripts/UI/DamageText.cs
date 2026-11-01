@@ -3,16 +3,19 @@ using UnityEngine;
 
 public class DamageText : MonoBehaviour
 {
-    [SerializeField] Vector2 velocityFirstHalf;
-    [SerializeField] Vector2 velocitySecondHalf;
     [SerializeField] float firstLifetime = 0.2f;
     [SerializeField] float secondLifetime = 0.4f;
     [SerializeField] float finalOpacity = 0.25f;
+
+    [SerializeField] Vector2 velocityFirstHalf;
+    [SerializeField] Vector2 velocitySecondHalf;
 
     [SerializeField] Vector2 initialScale;
     [SerializeField] Vector2 maxScale;
     [SerializeField] Vector2 finalScale;
 
+    [SerializeField] Color outlineShieldColor;
+    [SerializeField] Color outlineHealthColor;
 
     Vector3 position;
     TMP_Text text;
@@ -21,28 +24,29 @@ public class DamageText : MonoBehaviour
     Timer firstTimer;
     Timer secondTimer;
 
-    public void Init(float damage, bool isShieldDamage, Color elementColor, bool hitFromRight = false)
+    public void Init(float damage, bool isShieldDamage, DamageComponent damageComponent)
     {
-        color = elementColor;
+        color = damageComponent.ElementData.color;
 
         position = transform.position;
         text = GetComponentInChildren<TMP_Text>();
         text.text = damage.ToString();
-        text.color = elementColor;
+        text.color = color;
         transform.localScale = initialScale;
-
+        text.outlineColor = outlineHealthColor;
+        
         if (isShieldDamage)
         {
-            text.outlineColor = Color.yellow;
+            text.outlineColor = outlineShieldColor;
         }
-        else
-        {
-            text.outlineColor = Color.green;
-        }
-
-        if (hitFromRight)
+        if (damageComponent.HitFromRight)
         {
             velocityFirstHalf.x *= -1f;
+        }
+        if (damageComponent.GetMultiplier() > 1f)
+        {
+            text.text = text.text + "!";
+            maxScale += maxScale / 2f;
         }
 
         firstTimer = TimerManager.Instance.StartTimer(firstLifetime, SecondHalf, deltaTime =>

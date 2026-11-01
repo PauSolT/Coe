@@ -15,7 +15,11 @@ MonoBehaviour:
   abilityName: Fa1
   description: fa1
   power: 10
+  secondaryPower: 0
   cooldown: 4
-  duration: 0.6
+  duration: 0.2
   prefab: {fileID: 1744427103138294773, guid: 804429aa816292f46a2a4e3ae3a5f19b, type: 3}
   tickFrequency: 0
+  empoweredPower: 0
+  empoweredSecondaryPower: 0
+  empoweredDuration: 0

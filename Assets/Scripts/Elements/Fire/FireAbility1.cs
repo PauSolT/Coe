@@ -10,6 +10,14 @@ public class FireAbility1 : ActiveAbility
             data.prefab, 
             owner.transform.position, 
             owner.transform.localRotation);
+
+        if (!owner.GetComponent<PlayerController>().GetFacingRight())
+        {
+            Vector3 scale = instance.transform.localScale;
+            scale.x *= -1f;
+            instance.transform.localScale = scale;
+        }
+
         SingleTickDamage damage = instance.GetComponentInChildren<SingleTickDamage>();
         damage.Init(owner,
             elementData,

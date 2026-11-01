@@ -147,14 +147,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fee6bc248158a3c4caf08b998efd625f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageText
-  velocityFirstHalf: {x: 0.25, y: 4}
-  velocitySecondHalf: {x: 0.15, y: 1}
   firstLifetime: 0.2
   secondLifetime: 0.3
   finalOpacity: 0.1
+  velocityFirstHalf: {x: 0.25, y: 4}
+  velocitySecondHalf: {x: 0.15, y: 1}
   initialScale: {x: 0.25, y: 0.25}
   maxScale: {x: 0.8, y: 0.8}
   finalScale: {x: 0.5, y: 0.5}
+  outlineShieldColor: {r: 0.48998755, g: 0.59024155, b: 0.8584906, a: 0.4745098}
+  outlineHealthColor: {r: 0.6698113, g: 0.30647027, b: 0.34107423, a: 0.49803922}
 --- !u!1 &2597929228866746404
 GameObject:
   m_ObjectHideFlags: 0

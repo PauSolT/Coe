@@ -116,6 +116,11 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
+    public bool GetFacingRight()
+    { 
+        return facingRight;
+    }
+
     /// <summary>
     /// Get the bounds of the collision
     /// </summary>
@@ -144,7 +149,6 @@ public class PlayerController : MonoBehaviour
         //-1 to get the number of spaces between raycasts
         horizontalRaySpacing = bounds.size.x / (horizontalRaycount - 1);
     }
-
 
     struct RaycastOrigins
     {
