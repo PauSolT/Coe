@@ -10,6 +10,7 @@ public class FireElement : Element
         AddActive(new FireAbility1());
         AddActive(new FireAbility2());
         AddActive(new FireAbility3());
+        AddActive(new FireBasicAttack());
         base.Init();
 
     }

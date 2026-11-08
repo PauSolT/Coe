@@ -17,6 +17,7 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
     public event Action Ability3Event;
     public event Action PreviousElementEvent;
     public event Action NextElementEvent;
+    public event Action BasicAttackEvent;
 
 
 
@@ -125,6 +126,14 @@ public class InputReader : ScriptableObject, InputActions.IPlayerActions
         if (context.phase == InputActionPhase.Performed)
         {
             NextElementEvent?.Invoke();
+        }
+    }
+
+    public void OnBasicAttack(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            BasicAttackEvent?.Invoke();
         }
     }
 }

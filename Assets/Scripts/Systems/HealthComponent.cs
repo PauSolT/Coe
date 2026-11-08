@@ -227,7 +227,6 @@ public class HealthComponent : MonoBehaviour, ITargetable
             halfXCollision *= -1f;
             textSpawnPosition.x += halfXCollision;
             GameObject popupShield = Instantiate(popupPrefab, textSpawnPosition, Quaternion.identity);
-            Log.Info($"SHIELD {textSpawnPosition}");
             popupShield.GetComponentInChildren<DamageText>().Init(shieldDamage, true, damage);
             halfXCollision *= -1f;
             textSpawnPosition.x += halfXCollision;
@@ -237,7 +236,6 @@ public class HealthComponent : MonoBehaviour, ITargetable
         if (remainingDamage > 0)
         {
             GameObject popupDamage = Instantiate(popupPrefab, textSpawnPosition, Quaternion.identity);
-            Log.Info($"HEALTH {textSpawnPosition}");
             popupDamage.GetComponentInChildren<DamageText>().Init(remainingDamage, false, damage);
         }
     }

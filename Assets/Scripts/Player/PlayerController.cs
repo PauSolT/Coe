@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
         inputReader.Ability1Event += player.UseAbility1;
         inputReader.Ability2Event += player.UseAbility2;
         inputReader.Ability3Event += player.UseAbility3;
+        inputReader.BasicAttackEvent += player.UseBasicAttack;
     }
     private void OnDisable()
     {
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour
         inputReader.Ability1Event -= player.UseAbility1;
         inputReader.Ability2Event -= player.UseAbility2;
         inputReader.Ability3Event -= player.UseAbility3;
+        inputReader.BasicAttackEvent -= player.UseBasicAttack;
     }
 
     void FixedUpdate()
@@ -154,5 +156,7 @@ public class PlayerController : MonoBehaviour
     {
         public Vector2 topLeft, topRight, bottomLeft, bottomRight;
     }
+    
+    
 
 }
