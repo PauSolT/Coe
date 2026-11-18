@@ -5,9 +5,9 @@ public class SingleTickDamage : BaseDamage
 {
     List<Collider2D> alreadyDamaged = new List<Collider2D>();
 
-    public void Init(GameObject owner, ElementData element, float damage, float duration = 0.1f, bool onTarget = false)
+    public void Init(GameObject owner, ElementData element, float damage, float duration = 0.1f, bool onTarget = false, bool isElementalDamage = true)
     {
-        BaseInit(owner, damage, element, duration);
+        BaseInit(owner, damage, element, duration, isElementalDamage: isElementalDamage);
 
         if (onTarget)
         {

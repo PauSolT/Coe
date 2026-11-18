@@ -19,6 +19,8 @@ public class AbilityData : ScriptableObject
     public float duration;
     [Tooltip("What to instantiate when executing the ability")]
     public GameObject prefab;
+    [Tooltip("If it deals elemental damage")]
+    public bool isElementalDamage = true;
 
     [Header("DoT")]
     [Tooltip("Frequency of ticks for DoT damage in seconds")]

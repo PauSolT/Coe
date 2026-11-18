@@ -30,7 +30,8 @@ public class WaterAbility1 : WaterAbility
             elementData,
             GetCurrentTarget(),
             finalPower,
-            finalDuration);
+            finalDuration,
+            isElementalDamage: data.isElementalDamage);
 
         return true;
     }

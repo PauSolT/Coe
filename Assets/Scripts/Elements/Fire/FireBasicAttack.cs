@@ -19,7 +19,8 @@ public class FireBasicAttack : ActiveAbility
             elementData,
             GetCurrentTarget(),
             data.power,
-            data.duration);
+            data.duration,
+            isElementalDamage: data.isElementalDamage);
 
         return true;
     }

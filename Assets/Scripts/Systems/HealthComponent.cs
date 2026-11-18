@@ -39,7 +39,7 @@ public class HealthComponent : MonoBehaviour, ITargetable
     /// <returns>Returns the damage dealt to health.</returns>
     public void TakeDamage(DamageComponent damage)
     {
-        if (damage.ElementData != null)
+        if (damage.IsElementalDamage && damage.ElementData != null)
         {
             ElementalReceiver receiver = GetComponent<ElementalReceiver>();
             float reactionBonus = receiver.ApplyElement(damage.ElementData);

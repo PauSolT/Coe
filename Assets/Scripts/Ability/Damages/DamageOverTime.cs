@@ -5,9 +5,9 @@ public class DamageOverTime : BaseDamage
 {
     List<HealthComponent> targetsToDamage = new List<HealthComponent>();
 
-    public void Init(GameObject owner, ElementData element, float damage, float damageFrequency, float duration = 0.1f, bool onTarget = false)
+    public void Init(GameObject owner, ElementData element, float damage, float damageFrequency, float duration = 0.1f, bool onTarget = false, bool isElementalDamage = true)
     {
-        BaseInit(owner, damage, element, duration);
+        BaseInit(owner, damage, element, duration, isElementalDamage: isElementalDamage);
 
         if (onTarget)
         {

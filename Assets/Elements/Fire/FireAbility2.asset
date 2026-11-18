@@ -15,7 +15,12 @@ MonoBehaviour:
   abilityName: fa2
   description: fa2
   power: 5
+  secondaryPower: 0
   cooldown: 10
   duration: 4
   prefab: {fileID: 7939574643559878857, guid: 7afa10b8580977c4eb1f793cd90aff41, type: 3}
+  isElementalDamage: 1
   tickFrequency: 0.5
+  empoweredPower: 0
+  empoweredSecondaryPower: 0
+  empoweredDuration: 0

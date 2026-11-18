@@ -5,9 +5,9 @@ public class ProjectileDamage : BaseDamage
     [SerializeField] private float speed = 10f;
     Timer timer;
 
-    public void Init(GameObject owner, ElementData element, GameObject target, float damage, float duration)
+    public void Init(GameObject owner, ElementData element, GameObject target, float damage, float duration, bool isElementalDamage = true)
     {
-        BaseInit(owner, damage, element, duration);
+        BaseInit(owner, damage, element, duration, isElementalDamage: isElementalDamage);
 
         timer = TimerManager.Instance.StartTimer(duration,
             onEnd: SelfDestroy,
