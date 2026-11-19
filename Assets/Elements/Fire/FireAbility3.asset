@@ -15,7 +15,12 @@ MonoBehaviour:
   abilityName: fe3
   description: fe3
   power: 0
+  secondaryPower: 0
   cooldown: 12
   duration: 2.8
   prefab: {fileID: 0}
+  isElementalDamage: 1
   tickFrequency: 0
+  empoweredPower: 0
+  empoweredSecondaryPower: 0
+  empoweredDuration: 0

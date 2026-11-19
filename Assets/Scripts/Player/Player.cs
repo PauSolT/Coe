@@ -30,7 +30,11 @@ public class Player : MonoBehaviour
             {
                 ActiveAbility aa = element.Actives[i];
                 aa.Init(gameObject, element.Data);
-                aa.SetImage(playerUI.AbilityImages()[i + 1]);
+                //Basic attack doesn't have image
+                if (i != element.Actives.Count - 1)
+                {
+                    aa.SetImage(playerUI.AbilityImages()[i + 1]);
+                }
             }
         }
 
@@ -121,12 +125,21 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+    /// Function to call basic attack in input
+    /// </summary>
+    public void UseBasicAttack()
+    {
+        UseAbility(3);
+        
+    }
+
+    /// <summary>
     /// Logic for using an ability
     /// </summary>
     /// <param name="index">Index of the ability going from 0 to 2</param>
     private void UseAbility(int index)
     {
-        List<ActiveAbility> actives = elements[currentElement].Actives;
+        List<ActiveAbility> actives = GetCurrentElement().Actives;
         if (index < actives.Count)
         {
             actives[index].AbilityUse();
@@ -156,9 +169,11 @@ public class Player : MonoBehaviour
         Color color = GetCurrentElement().GetColor();
         spriteRenderer.color = color;
         GetCurrentElement().Passive.GetImage().color = color;
-        foreach (ActiveAbility aa in GetCurrentElement().Actives)
+        List<ActiveAbility> actives = GetCurrentElement().Actives;
+        //Basic attack doesn't have image
+        for (int i = 0; i < actives.Count - 1; i++)
         {
-            aa.GetImage().color = color;
+            actives[i].GetImage().color = color;
         }
     }
 

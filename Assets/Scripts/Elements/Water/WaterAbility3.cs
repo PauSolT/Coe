@@ -27,7 +27,8 @@ public class WaterAbility3 : WaterAbility
             elementData,
             finalPower,
             data.tickFrequency,
-            duration: finalDuration);
+            duration: finalDuration,
+            isElementalDamage: data.isElementalDamage);
 
         return true;
     }

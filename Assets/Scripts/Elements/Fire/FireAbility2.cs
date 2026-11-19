@@ -24,7 +24,8 @@ public class FireAbility2 : ActiveAbility
             data.power,
             data.tickFrequency,
             duration: data.duration,
-            onTarget: true);
+            onTarget: true,
+            isElementalDamage: data.isElementalDamage);
 
         return true;
 

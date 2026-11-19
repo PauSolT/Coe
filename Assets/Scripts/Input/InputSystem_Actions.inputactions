@@ -122,6 +122,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "BasicAttack",
+                    "type": "Button",
+                    "id": "b4e4a76f-279c-4c5b-8976-97800a64ec1f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -479,23 +488,23 @@
                 },
                 {
                     "name": "",
-                    "id": "3070123c-2bfb-46d8-89a9-e7c75f3160c0",
-                    "path": "<Mouse>/leftButton",
+                    "id": "9b236d1a-281f-42f2-a5e5-bd78f4114937",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "PreviousElement",
+                    "action": "NextElement",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "9b236d1a-281f-42f2-a5e5-bd78f4114937",
-                    "path": "<Mouse>/rightButton",
+                    "id": "dfed2ce3-ce8d-442d-af15-20a5468d758e",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "NextElement",
+                    "groups": "",
+                    "action": "BasicAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

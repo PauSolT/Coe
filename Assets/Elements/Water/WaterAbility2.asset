@@ -19,6 +19,7 @@ MonoBehaviour:
   cooldown: 12
   duration: 4
   prefab: {fileID: 1396748803335550308, guid: 4556209fe4810024eb54ecf1d379044b, type: 3}
+  isElementalDamage: 1
   tickFrequency: 0
   empoweredPower: 5
   empoweredSecondaryPower: 3

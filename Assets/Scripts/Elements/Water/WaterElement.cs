@@ -10,6 +10,7 @@ public class WaterElement : Element
         AddActive(new WaterAbility1());
         AddActive(new WaterAbility2());
         AddActive(new WaterAbility3());
+        AddActive(new WaterBasicAttack());
         base.Init();
 
     }

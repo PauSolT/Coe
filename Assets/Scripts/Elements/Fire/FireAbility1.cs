@@ -22,7 +22,8 @@ public class FireAbility1 : ActiveAbility
         damage.Init(owner,
             elementData,
             data.power,
-            data.duration);
+            data.duration,
+            isElementalDamage: data.isElementalDamage);
 
         return true;
     }

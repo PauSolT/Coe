@@ -11,6 +11,8 @@ public abstract class Element : MonoBehaviour
 
     public Action<GameObject> OnElementEquip;
     public Action<GameObject> OnElementUnequip;
+    
+    private const int NUMBER_OF_ACTIVES = 4;
 
     public virtual void Init()
     {
@@ -87,7 +89,7 @@ public abstract class Element : MonoBehaviour
     /// <param name="active">The instance of the new active ability to add</param>
     protected void AddActive(ActiveAbility active)
     {
-        if (Actives.Count < 3)
+        if (Actives.Count < NUMBER_OF_ACTIVES)
         {
             Actives.Add(active);
             Log.Info($"Ability {active}" +

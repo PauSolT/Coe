@@ -52,7 +52,7 @@ public class WaterPassive : PassiveAbility
     private void SetAbilitiesEmpowered()
     {
         Log.Info($"Next water ability is empowered!", LogCategory.Elements);
-        foreach (WaterAbility ability in element.Actives)
+        foreach (WaterAbility ability in element.Actives.OfType<WaterAbility>())
         {
             ability.IsEmpowered = IsEmpowered;
         }

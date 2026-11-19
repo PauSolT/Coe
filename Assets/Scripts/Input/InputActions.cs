@@ -208,6 +208,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BasicAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""b4e4a76f-279c-4c5b-8976-97800a64ec1f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -565,23 +574,23 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3070123c-2bfb-46d8-89a9-e7c75f3160c0"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""id"": ""9b236d1a-281f-42f2-a5e5-bd78f4114937"",
+                    ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""PreviousElement"",
+                    ""action"": ""NextElement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9b236d1a-281f-42f2-a5e5-bd78f4114937"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""id"": ""dfed2ce3-ce8d-442d-af15-20a5468d758e"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""NextElement"",
+                    ""groups"": """",
+                    ""action"": ""BasicAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1182,6 +1191,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player_Ability3 = m_Player.FindAction("Ability3", throwIfNotFound: true);
         m_Player_PreviousElement = m_Player.FindAction("PreviousElement", throwIfNotFound: true);
         m_Player_NextElement = m_Player.FindAction("NextElement", throwIfNotFound: true);
+        m_Player_BasicAttack = m_Player.FindAction("BasicAttack", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1288,6 +1298,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Ability3;
     private readonly InputAction m_Player_PreviousElement;
     private readonly InputAction m_Player_NextElement;
+    private readonly InputAction m_Player_BasicAttack;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1351,6 +1362,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/NextElement".
         /// </summary>
         public InputAction @NextElement => m_Wrapper.m_Player_NextElement;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/BasicAttack".
+        /// </summary>
+        public InputAction @BasicAttack => m_Wrapper.m_Player_BasicAttack;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1416,6 +1431,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @NextElement.started += instance.OnNextElement;
             @NextElement.performed += instance.OnNextElement;
             @NextElement.canceled += instance.OnNextElement;
+            @BasicAttack.started += instance.OnBasicAttack;
+            @BasicAttack.performed += instance.OnBasicAttack;
+            @BasicAttack.canceled += instance.OnBasicAttack;
         }
 
         /// <summary>
@@ -1466,6 +1484,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @NextElement.started -= instance.OnNextElement;
             @NextElement.performed -= instance.OnNextElement;
             @NextElement.canceled -= instance.OnNextElement;
+            @BasicAttack.started -= instance.OnBasicAttack;
+            @BasicAttack.performed -= instance.OnBasicAttack;
+            @BasicAttack.canceled -= instance.OnBasicAttack;
         }
 
         /// <summary>
@@ -1857,6 +1878,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnNextElement(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "BasicAttack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBasicAttack(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

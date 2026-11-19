@@ -11,14 +11,17 @@ public class DamageComponent
     private float multiplier = 1;
     public ElementData ElementData { get; private set; }
 
+    public bool IsElementalDamage { get; private set; }
+
     public bool HitFromRight { get; private set; }
     public Collider2D TargetCollider { get; set; }
 
-    public DamageComponent(float amount, ElementData elementData, float multiplier)
+    public DamageComponent(float amount, ElementData elementData, float multiplier, bool isElementalDamage = true)
     {
         this.amount = amount;
         this.multiplier = multiplier;
         ElementData = elementData;
+        IsElementalDamage = isElementalDamage;
     }
 
     public void AddMultiplier(float mult)

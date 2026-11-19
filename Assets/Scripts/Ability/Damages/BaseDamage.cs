@@ -9,13 +9,13 @@ public class BaseDamage : MonoBehaviour
 
     protected DamageComponent damageComponent;
 
-    protected void BaseInit(GameObject owner, float damage, ElementData element, float duration, float multiplier = 1)
+    protected void BaseInit(GameObject owner, float damage, ElementData element, float duration, float multiplier = 1, bool isElementalDamage = true)
     {
         this.owner = owner;
         this.duration = duration;
         root = GetComponentInParent<AbilityPrefabRoot>();
 
-       damageComponent = new DamageComponent(damage, element, multiplier);
+       damageComponent = new DamageComponent(damage, element, multiplier, isElementalDamage);
 
     }
 
